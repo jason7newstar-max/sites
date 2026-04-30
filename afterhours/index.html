@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFTERHOURS / NYC — DJ Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050505;
+    --bg-elev: #0d0d0d;
+    --bg-card: #111;
+    --line: rgba(255,255,255,0.08);
+    --line-2: rgba(255,255,255,0.16);
+    --fg: #ffffff;
+    --fg-mute: #8a8a8a;
+    --fg-dim: #5a5a5a;
+    --accent: #d4ff3f;
+    --accent-deep: #a8d617;
+    --display: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+    --body: 'Inter', 'Helvetica Neue', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--body);
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; border: 0; cursor: pointer; background: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  /* === LAYOUT === */
+  .wrap { width: 100%; max-width: 1480px; margin: 0 auto; padding: 0 clamp(1.25rem, 3vw, 3rem); }
+
+  /* === NAV === */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1rem 0;
+    transition: background .35s ease, backdrop-filter .35s ease, padding .35s ease;
+  }
+  .nav.scrolled {
+    background: rgba(5,5,5,0.78);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--line);
+    padding: 0.7rem 0;
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 2rem;
+  }
+  .logo {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .logo-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 14px var(--accent);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+  .nav-links {
+    display: flex; gap: 2.2rem;
+    font-size: 0.86rem;
+    color: var(--fg-mute);
+    font-weight: 500;
+  }
+  .nav-links a { transition: color .2s; }
+  .nav-links a:hover { color: var(--fg); }
+  .nav-cta {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--accent);
+    color: #000;
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: transform .2s, background .2s;
+  }
+  .nav-cta:hover { transform: translateY(-1px); background: #fff; }
+  .nav-cta-arrow { transition: transform .25s; }
+  .nav-cta:hover .nav-cta-arrow { transform: translate(2px, -2px); }
+  @media (max-width: 800px) {
+    .nav-links { display: none; }
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 8rem 0 6rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute; inset: -20%;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(212,255,63,0.12), transparent 50%),
+      radial-gradient(ellipse at 80% 70%, rgba(120,80,255,0.10), transparent 55%),
+      radial-gradient(ellipse at 50% 100%, rgba(255,80,120,0.08), transparent 60%);
+    animation: drift 22s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    0%   { transform: translate(0,0) scale(1); }
+    100% { transform: translate(2%, -2%) scale(1.08); }
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+  canvas#eq {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    width: 100%; height: 35vh;
+    z-index: 1;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    color: var(--accent);
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(3rem, 9.5vw, 9.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin-bottom: 2rem;
+  }
+  .hero h1 .accent { color: var(--accent); }
+  .hero h1 .out {
+    -webkit-text-stroke: 1.5px var(--fg);
+    color: transparent;
+  }
+  .hero-sub {
+    font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+    color: var(--fg-mute);
+    max-width: 640px;
+    margin-bottom: 2.5rem;
+    line-height: 1.55;
+    font-weight: 300;
+  }
+  .hero-sub strong { color: var(--fg); font-weight: 500; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 1rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: transform .2s, background .2s, color .2s, border-color .2s;
+  }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--line-2);
+  }
+  .btn-ghost:hover { border-color: var(--fg); transform: translateY(-2px); }
+  .btn-arrow { transition: transform .25s; }
+  .btn:hover .btn-arrow { transform: translate(2px, -2px); }
+
+  .hero-meta {
+    margin-top: 5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    border-top: 1px solid var(--line);
+    padding-top: 2rem;
+  }
+  .hero-meta-item .num {
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .hero-meta-item .label {
+    color: var(--fg-mute);
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+  }
+  @media (max-width: 700px) {
+    .hero-meta { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  }
+
+  /* === MARQUEE === */
+  .marquee {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 1.6rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 3.5rem;
+    width: max-content;
+    animation: marquee 38s linear infinite;
+  }
+  .marquee-item {
+    font-family: var(--display);
+    font-size: clamp(1.2rem, 2.2vw, 1.9rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--fg-mute);
+    white-space: nowrap;
+    display: flex; align-items: center; gap: 3.5rem;
+  }
+  .marquee-item::after {
+    content: '';
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* === SECTION === */
+  section { padding: 7rem 0; position: relative; }
+  .section-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+    flex-wrap: wrap;
+  }
+  .section-head-left { flex: 1 1 600px; }
+  .section-eyebrow {
+    color: var(--accent);
+    font-size: 0.76rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  .section-eyebrow::before { content: '◦  '; }
+  h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    max-width: 900px;
+  }
+  h2 .out {
+    -webkit-text-stroke: 1.5px var(--fg);
+    color: transparent;
+  }
+  .section-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--fg-mute);
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--line-2);
+    padding-bottom: 0.4rem;
+    transition: color .2s, border-color .2s;
+  }
+  .section-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* === ROSTER === */
+  .roster {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+  @media (max-width: 1100px) { .roster { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 800px) { .roster { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .roster { grid-template-columns: 1fr; } }
+
+  .dj-card {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.1rem;
+    background: var(--bg-elev);
+    transition: border-color .25s, transform .25s, background .25s;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .dj-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .dj-art {
+    aspect-ratio: 4/5;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+  }
+  .dj-art::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--art);
+    opacity: 0.85;
+    transition: transform .6s cubic-bezier(.2,.8,.2,1), opacity .35s;
+  }
+  .dj-card:hover .dj-art::before { transform: scale(1.06); opacity: 1; }
+  .dj-art-grain {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), transparent 40%),
+      radial-gradient(circle at 70% 80%, rgba(0,0,0,0.4), transparent 50%);
+    mix-blend-mode: overlay;
+  }
+  .dj-art-initials {
+    position: relative;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 4vw, 4rem);
+    letter-spacing: -0.03em;
+    color: rgba(0,0,0,0.55);
+    z-index: 1;
+    text-align: center;
+    padding: 0 1rem;
+    line-height: 1;
+  }
+  .dj-play {
+    position: absolute;
+    top: 0.8rem; right: 0.8rem;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+    transition: background .25s, transform .25s;
+  }
+  .dj-card:hover .dj-play { background: var(--accent); transform: scale(1.08); }
+  .dj-play svg { width: 14px; height: 14px; fill: #fff; transition: fill .25s; }
+  .dj-card:hover .dj-play svg { fill: #000; }
+  .dj-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.3rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .dj-name-arrow { opacity: 0; transition: opacity .25s, transform .25s; transform: translate(-4px, 4px); }
+  .dj-card:hover .dj-name-arrow { opacity: 1; transform: translate(0,0); color: var(--accent); }
+  .dj-tags {
+    display: flex; gap: 0.4rem; flex-wrap: wrap;
+    font-size: 0.74rem;
+    color: var(--fg-mute);
+  }
+  .dj-tags span { padding: 0.2rem 0.55rem; border: 1px solid var(--line); border-radius: 999px; }
+
+  /* === SOUND TILES === */
+  .sound-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 1000px) { .sound-grid { grid-template-columns: repeat(2, 1fr); } }
+  .sound-tile {
+    aspect-ratio: 1/1;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.5rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+    background: var(--bg-elev);
+    position: relative; overflow: hidden;
+    transition: border-color .25s, transform .25s;
+    cursor: pointer;
+  }
+  .sound-tile:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .sound-tile::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--tile-bg);
+    opacity: 0.0;
+    transition: opacity .35s;
+    z-index: 0;
+  }
+  .sound-tile:hover::before { opacity: 0.18; }
+  .sound-tile-num {
+    font-family: var(--display);
+    font-size: 0.85rem;
+    color: var(--fg-mute);
+    z-index: 1; position: relative;
+  }
+  .sound-tile-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2.4vw, 2rem);
+    letter-spacing: -0.02em;
+    line-height: 1.0;
+    z-index: 1; position: relative;
+  }
+  .sound-tile-bpm {
+    font-size: 0.78rem;
+    color: var(--fg-mute);
+    margin-top: 0.5rem;
+    letter-spacing: 0.15em;
+    z-index: 1; position: relative;
+    text-transform: uppercase;
+  }
+
+  /* === STATS === */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 4rem 0;
+  }
+  @media (max-width: 800px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat-num {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .stat-num .accent { color: var(--accent); }
+  .stat-label {
+    color: var(--fg-mute);
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* === EVENTS === */
+  .events {
+    display: flex; flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+  .event-row {
+    display: grid;
+    grid-template-columns: 100px 1.5fr 1fr 1fr auto;
+    gap: 1.5rem;
+    padding: 1.5rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+    transition: background .2s, padding .2s;
+  }
+  .event-row:hover { background: rgba(212,255,63,0.04); padding-left: 1rem; padding-right: 1rem; }
+  .event-date { font-family: var(--display); font-weight: 500; color: var(--fg-mute); font-size: 0.9rem; }
+  .event-name { font-family: var(--display); font-weight: 700; font-size: 1.05rem; }
+  .event-venue { color: var(--fg-mute); font-size: 0.92rem; }
+  .event-djs { color: var(--fg-mute); font-size: 0.85rem; }
+  .event-arrow { color: var(--fg-mute); transition: color .2s, transform .2s; }
+  .event-row:hover .event-arrow { color: var(--accent); transform: translate(4px, -4px); }
+  @media (max-width: 800px) {
+    .event-row { grid-template-columns: 1fr auto; gap: 0.4rem; }
+    .event-date, .event-venue, .event-djs { grid-column: 1 / -1; }
+  }
+
+  /* === BOOKING === */
+  .book {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: clamp(2rem, 5vw, 5rem);
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .book { grid-template-columns: 1fr; gap: 2.5rem; } }
+  .book h2 { font-size: clamp(1.8rem, 4vw, 3.4rem); }
+  .book-sub { color: var(--fg-mute); margin-top: 1rem; max-width: 460px; line-height: 1.6; }
+
+  .form { display: flex; flex-direction: column; gap: 1rem; }
+  .field {
+    display: flex; flex-direction: column; gap: 0.4rem;
+  }
+  .field label {
+    font-size: 0.72rem;
+    color: var(--fg-mute);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .field input, .field select, .field textarea {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--fg);
+    padding: 0.7rem 0;
+    font: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-bottom-color: var(--accent); }
+  .field select { color: var(--fg); appearance: none; cursor: pointer; }
+  .field option { background: var(--bg-elev); color: var(--fg); }
+  .field textarea { resize: vertical; min-height: 90px; font-family: inherit; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  .form button {
+    align-self: flex-start;
+    margin-top: 1rem;
+  }
+
+  /* === FOOTER === */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 4rem 0 2rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 800px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  }
+  .footer-brand h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .footer-brand p { color: var(--fg-mute); max-width: 360px; line-height: 1.55; }
+  .footer-col h4 {
+    font-size: 0.74rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    margin-bottom: 1.2rem;
+    font-weight: 500;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 0.7rem;
+    color: var(--fg);
+    transition: color .2s;
+  }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom {
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
+    display: flex; justify-content: space-between; gap: 1rem;
+    color: var(--fg-dim);
+    font-size: 0.82rem;
+  }
+  @media (max-width: 600px) { .footer-bottom { flex-direction: column; } }
+
+  /* === REVEAL === */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="logo"><span class="logo-dot"></span>AFTERHOURS<span style="color:var(--fg-mute)">/</span>NYC</a>
+    <div class="nav-links">
+      <a href="#roster">Roster</a>
+      <a href="#sound">Sound</a>
+      <a href="#events">Events</a>
+      <a href="#about">About</a>
+      <a href="#book">Contact</a>
+    </div>
+    <a href="#book" class="nav-cta">Book a DJ <span class="nav-cta-arrow">↗</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+  </div>
+  <canvas id="eq"></canvas>
+  <div class="wrap hero-content">
+    <span class="hero-eyebrow reveal">NYC · EST. 2019</span>
+    <h1 class="reveal">
+      Sound for <br>
+      <span class="out">the five</span> <span class="accent">boroughs.</span>
+    </h1>
+    <p class="hero-sub reveal">
+      <strong>AFTERHOURS</strong> is a New York DJ agency representing artists who run the night —
+      from Brooklyn warehouses to rooftop weddings to Manhattan brand activations.
+      House. Techno. Open Format. Afrobeats. Whatever the room demands.
+    </p>
+    <div class="hero-ctas reveal">
+      <a href="#book" class="btn btn-primary">Book a DJ <span class="btn-arrow">↗</span></a>
+      <a href="#roster" class="btn btn-ghost">Hear the Roster <span class="btn-arrow">↗</span></a>
+    </div>
+
+    <div class="hero-meta reveal">
+      <div class="hero-meta-item"><div class="num">240<span class="accent" style="color:var(--accent)">+</span></div><div class="label">Events Booked</div></div>
+      <div class="hero-meta-item"><div class="num">38</div><div class="label">Artists on Roster</div></div>
+      <div class="hero-meta-item"><div class="num">5</div><div class="label">Boroughs</div></div>
+      <div class="hero-meta-item"><div class="num">24/7</div><div class="label">Booking Desk</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- VENUE MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Brooklyn Mirage</span>
+    <span class="marquee-item">Public Records</span>
+    <span class="marquee-item">House of Yes</span>
+    <span class="marquee-item">Knockdown Center</span>
+    <span class="marquee-item">Nowadays</span>
+    <span class="marquee-item">Good Room</span>
+    <span class="marquee-item">Le Bain</span>
+    <span class="marquee-item">Avant Gardner</span>
+    <span class="marquee-item">Elsewhere</span>
+    <span class="marquee-item">Musica</span>
+    <span class="marquee-item">Schimanski</span>
+    <span class="marquee-item">Bossa Nova Civic Club</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">Brooklyn Mirage</span>
+    <span class="marquee-item">Public Records</span>
+    <span class="marquee-item">House of Yes</span>
+    <span class="marquee-item">Knockdown Center</span>
+    <span class="marquee-item">Nowadays</span>
+    <span class="marquee-item">Good Room</span>
+    <span class="marquee-item">Le Bain</span>
+    <span class="marquee-item">Avant Gardner</span>
+    <span class="marquee-item">Elsewhere</span>
+    <span class="marquee-item">Musica</span>
+    <span class="marquee-item">Schimanski</span>
+    <span class="marquee-item">Bossa Nova Civic Club</span>
+  </div>
+</div>
+
+<!-- ROSTER -->
+<section id="roster">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head-left">
+        <div class="section-eyebrow">The Roster</div>
+        <h2>Artists who <span class="out">run</span> the night.</h2>
+      </div>
+      <a href="#" class="section-link">View full roster ↗</a>
+    </div>
+
+    <div class="roster" id="rosterGrid"></div>
+  </div>
+</section>
+
+<!-- SOUND -->
+<section id="sound" style="background: linear-gradient(180deg, transparent, rgba(212,255,63,0.025), transparent);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head-left">
+        <div class="section-eyebrow">What We Play</div>
+        <h2>Every floor, <br><span class="out">every tempo.</span></h2>
+      </div>
+      <a href="#book" class="section-link">Brief us on the room ↗</a>
+    </div>
+
+    <div class="sound-grid" id="soundGrid"></div>
+  </div>
+</section>
+
+<!-- STATS / ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head-left">
+        <div class="section-eyebrow">About</div>
+        <h2>Born in Brooklyn. <br>Booked everywhere.</h2>
+        <p style="color:var(--fg-mute); max-width: 620px; margin-top: 1.5rem; line-height: 1.7; font-size: 1.05rem;">
+          Founded in a Bushwick loft in 2019, AFTERHOURS started as a Sunday afterparty and turned into the agency
+          New York's most particular promoters, planners, and brands call when the music has to land.
+          We curate, we contract, we show up early. We do not flake.
+        </p>
+      </div>
+    </div>
+
+    <div class="stats reveal">
+      <div><div class="stat-num">240<span class="accent">+</span></div><div class="stat-label">Events Booked</div></div>
+      <div><div class="stat-num">38</div><div class="stat-label">Artists Represented</div></div>
+      <div><div class="stat-num">12</div><div class="stat-label">Resident Venues</div></div>
+      <div><div class="stat-num">100<span class="accent">%</span></div><div class="stat-label">Showed Up On Time</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-head-left">
+        <div class="section-eyebrow">Recent Bookings</div>
+        <h2>Where we've <span class="out">played.</span></h2>
+      </div>
+      <a href="#" class="section-link">All events ↗</a>
+    </div>
+
+    <div class="events" id="eventsList"></div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section id="book">
+  <div class="wrap">
+    <div class="book reveal">
+      <div>
+        <div class="section-eyebrow">Booking</div>
+        <h2>Tell us about <br><span class="accent" style="color:var(--accent)">the night.</span></h2>
+        <p class="book-sub">
+          Wedding, brand activation, warehouse rave, restaurant residency — we've staffed all of it.
+          Replies within 24 hours, M–F. For events under 72 hours out, call <strong style="color:var(--fg)">+1 (212) 555-0119</strong>.
+        </p>
+      </div>
+
+      <form class="form" onsubmit="submitForm(event)">
+        <div class="form-row">
+          <div class="field">
+            <label>Your name</label>
+            <input type="text" required placeholder="Jane Doe">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" required placeholder="hello@yourcompany.com">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Event type</label>
+            <select required>
+              <option value="">Select…</option>
+              <option>Private party</option>
+              <option>Wedding</option>
+              <option>Brand activation</option>
+              <option>Club night / Rave</option>
+              <option>Corporate</option>
+              <option>Restaurant residency</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input type="date" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Tell us more</label>
+          <textarea placeholder="Vibe, venue, expected headcount, sound preferences…"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send request <span class="btn-arrow">↗</span></button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>AFTERHOURS<br><span class="out" style="-webkit-text-stroke:1px var(--fg);color:transparent">/ NEW YORK</span></h3>
+        <p>A DJ agency for nights that need to land. Brooklyn-based, citywide, on call.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Agency</h4>
+        <a href="#roster">Roster</a>
+        <a href="#sound">Sound</a>
+        <a href="#about">About</a>
+        <a href="#events">Events</a>
+      </div>
+      <div class="footer-col">
+        <h4>Booking</h4>
+        <a href="#book">Get a quote</a>
+        <a href="mailto:bookings@afterhours.nyc">bookings@afterhours.nyc</a>
+        <a href="tel:+12125550119">+1 (212) 555-0119</a>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <a href="#">Instagram</a>
+        <a href="#">SoundCloud</a>
+        <a href="#">Resident Advisor</a>
+        <a href="#">Spotify</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AFTERHOURS / NYC. All rights reserved.</span>
+      <span>Bushwick · Brooklyn · NY</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ============ DATA ============
+const ROSTER = [
+  { name: 'KAIA REYES',     init: 'KR', tags: ['Afro House', 'Brazilian'],   art: 'linear-gradient(135deg,#ff6b35,#d4ff3f)' },
+  { name: 'BX STORM',       init: 'BX', tags: ['Hip-Hop', 'R&B'],            art: 'linear-gradient(135deg,#7c3aed,#ec4899)' },
+  { name: 'MILO 88',        init: '88', tags: ['Techno', 'Acid'],            art: 'linear-gradient(135deg,#0ea5e9,#1e3a8a)' },
+  { name: 'ANGEL ORTIZ',    init: 'AO', tags: ['Disco', 'Italo'],            art: 'linear-gradient(135deg,#f59e0b,#dc2626)' },
+  { name: 'SOFI LIANG',     init: 'SL', tags: ['Deep House', 'Garage'],      art: 'linear-gradient(135deg,#10b981,#0d9488)' },
+  { name: 'NIGHT FRAME',    init: 'NF', tags: ['Drum & Bass'],               art: 'linear-gradient(135deg,#1e1b4b,#a78bfa)' },
+  { name: 'ARES',           init: 'AR', tags: ['Open Format', 'Hip-Hop'],    art: 'linear-gradient(135deg,#dc2626,#000)'    },
+  { name: 'JUNE ESTÉVEZ',   init: 'JE', tags: ['Amapiano', 'Afrobeats'],     art: 'linear-gradient(135deg,#fbbf24,#f97316)' },
+];
+
+const SOUNDS = [
+  { name: 'House',          bpm: '120–128 BPM', bg: '#d4ff3f' },
+  { name: 'Techno',         bpm: '128–140 BPM', bg: '#7c3aed' },
+  { name: 'Hip-Hop / R&B',  bpm: '70–110 BPM',  bg: '#ec4899' },
+  { name: 'Open Format',    bpm: 'All tempos',  bg: '#fbbf24' },
+  { name: 'Afrobeats',      bpm: '100–115 BPM', bg: '#f97316' },
+  { name: 'Brazilian Funk', bpm: '130–150 BPM', bg: '#10b981' },
+  { name: 'Disco / Italo',  bpm: '110–125 BPM', bg: '#dc2626' },
+  { name: 'Amapiano',       bpm: '108–115 BPM', bg: '#0ea5e9' },
+];
+
+const EVENTS = [
+  { date: 'MAR 2026', name: 'Verve Spring Activation',     venue: 'Brooklyn Mirage',  djs: 'BX STORM · ARES' },
+  { date: 'FEB 2026', name: 'Lunar New Year Block Party',  venue: 'Public Records',   djs: 'SOFI LIANG · MILO 88' },
+  { date: 'FEB 2026', name: 'Off-Site x Tribeca Films',    venue: 'The Box',          djs: 'ANGEL ORTIZ' },
+  { date: 'JAN 2026', name: 'NYE All-Night Long',          venue: 'House of Yes',     djs: 'KAIA REYES · NIGHT FRAME · JUNE ESTÉVEZ' },
+  { date: 'DEC 2025', name: 'Patagonia Holiday Party',     venue: 'Knockdown Center', djs: 'ARES' },
+  { date: 'NOV 2025', name: 'Resident Advisor x BK',       venue: 'Nowadays',         djs: 'MILO 88 · SOFI LIANG' },
+  { date: 'OCT 2025', name: 'BLK Friday Festival',         venue: 'Avant Gardner',    djs: 'JUNE ESTÉVEZ · KAIA REYES' },
+];
+
+// ============ RENDER ============
+const rosterGrid = document.getElementById('rosterGrid');
+ROSTER.forEach((dj, i) => {
+  const card = document.createElement('div');
+  card.className = 'dj-card reveal';
+  card.style.transitionDelay = (i * 60) + 'ms';
+  card.innerHTML = `
+    <div class="dj-art" style="--art: ${dj.art}">
+      <div class="dj-art-grain"></div>
+      <div class="dj-art-initials">${dj.init}</div>
+      <div class="dj-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="dj-name">${dj.name} <span class="dj-name-arrow">↗</span></div>
+    <div class="dj-tags">${dj.tags.map(t => `<span>${t}</span>`).join('')}</div>
+  `;
+  rosterGrid.appendChild(card);
+});
+
+const soundGrid = document.getElementById('soundGrid');
+SOUNDS.forEach((s, i) => {
+  const tile = document.createElement('div');
+  tile.className = 'sound-tile reveal';
+  tile.style.transitionDelay = (i * 50) + 'ms';
+  tile.style.setProperty('--tile-bg', s.bg);
+  tile.innerHTML = `
+    <div class="sound-tile-num">0${i + 1} / 0${SOUNDS.length}</div>
+    <div>
+      <div class="sound-tile-name">${s.name}</div>
+      <div class="sound-tile-bpm">${s.bpm}</div>
+    </div>
+  `;
+  soundGrid.appendChild(tile);
+});
+
+const eventsList = document.getElementById('eventsList');
+EVENTS.forEach((e, i) => {
+  const row = document.createElement('a');
+  row.className = 'event-row reveal';
+  row.href = '#';
+  row.style.transitionDelay = (i * 40) + 'ms';
+  row.innerHTML = `
+    <div class="event-date">${e.date}</div>
+    <div class="event-name">${e.name}</div>
+    <div class="event-venue">${e.venue}</div>
+    <div class="event-djs">${e.djs}</div>
+    <div class="event-arrow">↗</div>
+  `;
+  eventsList.appendChild(row);
+});
+
+// ============ NAV SCROLL ============
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 24);
+});
+
+// ============ REVEAL ON SCROLL ============
+const obs = new IntersectionObserver(es => {
+  for (const e of es) if (e.isIntersecting) {
+    e.target.classList.add('visible');
+    obs.unobserve(e.target);
+  }
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// ============ EQ CANVAS ============
+const eq = document.getElementById('eq');
+const eqCtx = eq.getContext('2d');
+let eqW, eqH, dpr = Math.min(window.devicePixelRatio || 1, 2);
+function resizeEq() {
+  eqW = eq.clientWidth; eqH = eq.clientHeight;
+  eq.width = eqW * dpr; eq.height = eqH * dpr;
+  eqCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeEq();
+window.addEventListener('resize', resizeEq);
+
+const BARS = 100;
+const phases = Array.from({ length: BARS }, () => Math.random() * Math.PI * 2);
+
+function drawEq() {
+  eqCtx.clearRect(0, 0, eqW, eqH);
+  const t = performance.now() / 1000;
+  const barW = eqW / BARS;
+  for (let i = 0; i < BARS; i++) {
+    // pseudo audio amplitude
+    const amp =
+      0.3 + 0.35 * Math.sin(t * 1.5 + phases[i]) +
+            0.25 * Math.sin(t * 0.7 + i * 0.2) +
+            0.15 * Math.sin(t * 4.2 + i * 0.8);
+    const h = Math.max(2, Math.abs(amp) * eqH * 0.85);
+    const x = i * barW + barW * 0.15;
+    const w = barW * 0.7;
+    const y = eqH - h;
+
+    const grad = eqCtx.createLinearGradient(x, y, x, eqH);
+    grad.addColorStop(0, 'rgba(212,255,63,0.85)');
+    grad.addColorStop(0.5, 'rgba(212,255,63,0.35)');
+    grad.addColorStop(1, 'rgba(212,255,63,0.0)');
+    eqCtx.fillStyle = grad;
+    eqCtx.fillRect(x, y, w, h);
+  }
+  requestAnimationFrame(drawEq);
+}
+drawEq();
+
+// ============ FORM ============
+function submitForm(ev) {
+  ev.preventDefault();
+  const btn = ev.target.querySelector('button');
+  btn.innerHTML = 'Sent ✓';
+  btn.style.background = '#fff';
+  setTimeout(() => {
+    ev.target.reset();
+    btn.innerHTML = 'Send request <span class="btn-arrow">↗</span>';
+    btn.style.background = '';
+  }, 2000);
+}
+</script>
+
+</body>
+</html>

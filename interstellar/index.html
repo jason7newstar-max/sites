@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INTERSTELLAR</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #000; color: #fff; overflow-x: hidden; }
+  body {
+    font-family: 'Helvetica Neue', 'PingFang SC', sans-serif;
+    font-weight: 200;
+  }
+  canvas#bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
+  .scene {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .title {
+    font-size: clamp(2.5rem, 9vw, 9rem);
+    font-weight: 100;
+    letter-spacing: 0.4em;
+    text-shadow: 0 0 40px rgba(100, 150, 255, 0.4);
+    text-align: center;
+    transform: translateY(0);
+  }
+  .subtitle {
+    margin-top: 1.5rem;
+    font-size: clamp(0.7rem, 1.2vw, 1rem);
+    letter-spacing: 0.5em;
+    opacity: 0.5;
+    text-align: center;
+  }
+  .quote {
+    font-size: clamp(1.4rem, 2.8vw, 2.6rem);
+    font-weight: 200;
+    text-align: center;
+    max-width: 900px;
+    line-height: 1.55;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.4s ease, transform 1.4s ease;
+    text-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+  }
+  .quote.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .quote .author {
+    display: block;
+    margin-top: 1.5rem;
+    font-size: 0.55em;
+    letter-spacing: 0.3em;
+    opacity: 0.55;
+  }
+  .scroll-hint {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    letter-spacing: 0.45em;
+    opacity: 0.45;
+    z-index: 10;
+    transition: opacity 0.6s;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.45; }
+    50%      { transform: translateX(-50%) translateY(8px); opacity: 0.85; }
+  }
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #4a90e2, #f5a623, #ff6b35);
+    width: 0%;
+    z-index: 50;
+    box-shadow: 0 0 12px rgba(255, 180, 80, 0.6);
+  }
+  .clock {
+    position: fixed;
+    top: 1.5rem;
+    right: 2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    opacity: 0.5;
+    z-index: 10;
+    font-variant-numeric: tabular-nums;
+  }
+  .scene-label {
+    position: fixed;
+    top: 1.5rem;
+    left: 2rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    opacity: 0;
+    z-index: 10;
+    transition: opacity 0.8s;
+  }
+  .scene-label.visible { opacity: 0.6; }
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="progress" id="progress"></div>
+<div class="scroll-hint" id="hint">SCROLL ↓</div>
+<div class="clock" id="clock">T+ 00:00:00</div>
+<div class="scene-label" id="label"></div>
+
+<section class="scene">
+  <div>
+    <h1 class="title">INTERSTELLAR</h1>
+    <p class="subtitle">A JOURNEY BEYOND</p>
+  </div>
+</section>
+
+<section class="scene">
+  <p class="quote">
+    We used to look up at the sky and wonder at our place in the stars.
+    Now we just look down and worry about our place in the dirt.
+  </p>
+</section>
+
+<section class="scene">
+  <p class="quote">
+    Mankind was born on Earth.
+    It was never meant to die here.
+  </p>
+</section>
+
+<section class="scene">
+  <p class="quote">
+    Maybe we've spent too long trying to figure all this out with theory.
+  </p>
+</section>
+
+<section class="scene">
+  <p class="quote">
+    Love is the one thing we're capable of perceiving
+    that transcends dimensions of time and space.
+  </p>
+</section>
+
+<section class="scene">
+  <p class="quote">
+    Do not go gentle into that good night.<br>
+    Rage, rage against the dying of the light.
+    <span class="author">— DYLAN THOMAS</span>
+  </p>
+</section>
+
+<section class="scene">
+  <div>
+    <p class="quote" style="font-size: clamp(1rem, 1.8vw, 1.4rem); opacity: 0.7;">
+      "We will find a way. We always have."
+      <span class="author">— COOPER</span>
+    </p>
+  </div>
+</section>
+
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H, cx, cy, dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+function resize() {
+  W = innerWidth; H = innerHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  cx = W / 2; cy = H / 2;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// --- starfield (3D warp) ---
+const NUM_STARS = 1200;
+const stars = [];
+for (let i = 0; i < NUM_STARS; i++) {
+  stars.push({
+    x: (Math.random() - 0.5) * 2400,
+    y: (Math.random() - 0.5) * 2400,
+    z: Math.random() * 1200 + 1,
+    o: Math.random() * 0.6 + 0.4,
+    px: 0, py: 0,
+  });
+}
+
+let scroll = 0, targetScroll = 0;
+
+function getProgress() {
+  const max = document.body.scrollHeight - window.innerHeight;
+  return max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+}
+
+window.addEventListener('scroll', () => {
+  targetScroll = getProgress();
+  document.getElementById('progress').style.width = (targetScroll * 100) + '%';
+});
+
+const lerp = (a, b, t) => a + (b - a) * t;
+const easeInOut = t => t < 0.5 ? 2*t*t : -1 + (4-2*t)*t;
+
+function bandFade(progress, start, end) {
+  if (progress < start || progress > end) return 0;
+  const t = (progress - start) / (end - start);
+  return Math.sin(t * Math.PI);
+}
+
+function draw() {
+  scroll = lerp(scroll, targetScroll, 0.07);
+
+  // background gradient — drifts through the journey
+  ctx.clearRect(0, 0, W, H);
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W, H) * 0.9);
+  if (scroll < 0.18) {
+    bg.addColorStop(0, '#0a1130');
+    bg.addColorStop(0.6, '#03061a');
+    bg.addColorStop(1, '#000');
+  } else if (scroll < 0.42) {
+    bg.addColorStop(0, '#0d0a30');
+    bg.addColorStop(1, '#000');
+  } else if (scroll < 0.62) {
+    bg.addColorStop(0, '#160a3a');
+    bg.addColorStop(0.6, '#04061c');
+    bg.addColorStop(1, '#000');
+  } else if (scroll < 0.85) {
+    bg.addColorStop(0, '#080300');
+    bg.addColorStop(0.5, '#1a0700');
+    bg.addColorStop(1, '#000');
+  } else {
+    bg.addColorStop(0, '#0a1530');
+    bg.addColorStop(0.6, '#020618');
+    bg.addColorStop(1, '#000');
+  }
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // warp speed grows with scroll
+  const warp = Math.pow(scroll, 1.4) * 40;
+
+  // stars
+  for (const s of stars) {
+    s.z -= 0.4 + warp;
+    if (s.z <= 1) {
+      s.z = 1200;
+      s.x = (Math.random() - 0.5) * 2400;
+      s.y = (Math.random() - 0.5) * 2400;
+    }
+    const k = 220 / s.z;
+    const sx = s.x * k + cx;
+    const sy = s.y * k + cy;
+    if (sx < -50 || sx > W + 50 || sy < -50 || sy > H + 50) continue;
+
+    const size = (1 - s.z / 1200) * 2.4;
+
+    if (warp > 4) {
+      // streak
+      const prevK = 220 / (s.z + warp * 2.5);
+      const px = s.x * prevK + cx;
+      const py = s.y * prevK + cy;
+      const grd = ctx.createLinearGradient(px, py, sx, sy);
+      grd.addColorStop(0, `rgba(180, 200, 255, 0)`);
+      grd.addColorStop(1, `rgba(220, 230, 255, ${s.o})`);
+      ctx.strokeStyle = grd;
+      ctx.lineWidth = Math.max(size, 1);
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(sx, sy);
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = `rgba(255, 255, 255, ${s.o})`;
+      ctx.beginPath();
+      ctx.arc(sx, sy, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // wormhole 0.22 - 0.55
+  const wf = bandFade(scroll, 0.22, 0.55);
+  if (wf > 0.01) drawWormhole(wf);
+
+  // black hole 0.5 - 0.88
+  const bf = bandFade(scroll, 0.5, 0.88);
+  if (bf > 0.01) drawBlackHole(bf);
+
+  // tesseract 0.78 - 1.0
+  const tf = scroll > 0.78 ? Math.min((scroll - 0.78) / 0.18, 1) : 0;
+  if (tf > 0.01) drawTesseract(tf);
+
+  requestAnimationFrame(draw);
+}
+
+const now = () => performance.now() / 1000;
+
+function drawWormhole(fade) {
+  ctx.save();
+  ctx.globalAlpha = fade;
+  ctx.translate(cx, cy);
+
+  const t = now();
+  const r = Math.min(W, H) * 0.28 + Math.sin(t * 0.6) * 12;
+
+  // outer glow
+  const glow = ctx.createRadialGradient(0, 0, r * 0.3, 0, 0, r * 1.4);
+  glow.addColorStop(0, 'rgba(80, 130, 255, 0.5)');
+  glow.addColorStop(0.4, 'rgba(120, 90, 220, 0.4)');
+  glow.addColorStop(0.8, 'rgba(180, 200, 255, 0.15)');
+  glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 1.4, 0, Math.PI * 2);
+  ctx.fill();
+
+  // tunnel rings — receding into distance
+  for (let i = 0; i < 14; i++) {
+    const phase = (t * 0.4 + i / 14) % 1;
+    const ringR = r * (0.15 + phase * 1.0);
+    const alpha = (1 - phase) * 0.55 * fade;
+    const wob = Math.sin(t * 1.5 + i) * 0.05;
+    ctx.strokeStyle = `rgba(140, 190, 255, ${alpha})`;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, ringR, ringR * (0.92 + wob), t * 0.15 + i, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // bright core
+  const core = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 0.25);
+  core.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+  core.addColorStop(0.6, 'rgba(180, 210, 255, 0.4)');
+  core.addColorStop(1, 'rgba(100, 140, 255, 0)');
+  ctx.fillStyle = core;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 0.25, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function drawBlackHole(fade) {
+  ctx.save();
+  ctx.globalAlpha = fade;
+  ctx.translate(cx, cy);
+
+  const t = now();
+  const r = Math.min(W, H) * 0.13;
+  const tilt = Math.sin(t * 0.08) * 0.06;
+  ctx.rotate(tilt);
+
+  // far-side glow halo
+  const halo = ctx.createRadialGradient(0, 0, r * 1.0, 0, 0, r * 4);
+  halo.addColorStop(0, 'rgba(255, 140, 50, 0.18)');
+  halo.addColorStop(0.5, 'rgba(180, 80, 30, 0.06)');
+  halo.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  ctx.fillStyle = halo;
+  ctx.fillRect(-W, -H, W * 2, H * 2);
+
+  // top arc — far side of disk lensed up over the top
+  drawDiskArc(r, true, t);
+
+  // event horizon (pure black)
+  ctx.fillStyle = '#000';
+  ctx.beginPath();
+  ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fill();
+
+  // photon ring
+  const ring = ctx.createRadialGradient(0, 0, r, 0, 0, r * 1.12);
+  ring.addColorStop(0, 'rgba(255, 220, 150, 0)');
+  ring.addColorStop(0.4, 'rgba(255, 200, 100, 0.55)');
+  ring.addColorStop(0.7, 'rgba(255, 180, 80, 0.4)');
+  ring.addColorStop(1, 'rgba(255, 140, 50, 0)');
+  ctx.fillStyle = ring;
+  ctx.beginPath();
+  ctx.arc(0, 0, r * 1.12, 0, Math.PI * 2);
+  ctx.fill();
+
+  // bottom arc — near side of disk (in front)
+  drawDiskArc(r, false, t);
+
+  ctx.restore();
+}
+
+function drawDiskArc(r, top, t) {
+  const startA = top ? Math.PI : 0;
+  const endA = top ? Math.PI * 2 : Math.PI;
+
+  for (let layer = 0; layer < 14; layer++) {
+    const dr = r * (1.18 + layer * 0.11);
+    const flat = top ? 0.22 + layer * 0.008 : 0.28 + layer * 0.01;
+    ctx.beginPath();
+    for (let i = 0; i <= 220; i++) {
+      const a = startA + (endA - startA) * (i / 220);
+      const noise = Math.sin(a * 5 + t * 1.2 + layer * 0.5) * 0.04;
+      const x = Math.cos(a) * dr * (1 + noise);
+      const y = Math.sin(a) * dr * flat * (1 + noise * 0.5);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    const layerFade = 1 - layer / 14;
+    const hue = 30 + layer * 1.5;
+    const lit = 60 - layer * 3;
+    ctx.strokeStyle = `hsla(${hue}, 95%, ${lit}%, ${0.55 * layerFade})`;
+    ctx.lineWidth = 1.4 + layer * 0.18;
+    ctx.stroke();
+  }
+
+  // bright particles riding the disk
+  for (let i = 0; i < 90; i++) {
+    const a = startA + (endA - startA) * (i / 90 + (t * 0.04) % 1);
+    const dr = r * (1.25 + (i % 7) * 0.08);
+    const flat = top ? 0.24 : 0.3;
+    const x = Math.cos(a) * dr;
+    const y = Math.sin(a) * dr * flat;
+    const bright = Math.abs(Math.cos(a)) * 0.7 + 0.3;
+    ctx.fillStyle = `rgba(255, ${200 + Math.floor(40*Math.sin(a*3+t))}, ${100}, ${bright * 0.7})`;
+    ctx.beginPath();
+    ctx.arc(x, y, 1.2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawTesseract(fade) {
+  ctx.save();
+  ctx.globalAlpha = fade * 0.85;
+  ctx.translate(cx, cy);
+
+  const t = now();
+  const grid = 8;
+  const spacing = Math.min(W, H) * 0.07;
+
+  // 3D wireframe cube of cubes — simplified tesseract feel
+  const points = [];
+  for (let i = -grid; i <= grid; i += 2) {
+    for (let j = -grid; j <= grid; j += 2) {
+      for (let k = -grid; k <= grid; k += 2) {
+        const wave = Math.sin(i * 0.3 + j * 0.3 + k * 0.3 + t * 0.7) * 0.5;
+        const z = k * spacing + 800 + wave * 30;
+        const persp = 600 / z;
+        const x = i * spacing * persp;
+        const y = j * spacing * persp;
+        const depth = 1 - z / 1500;
+        points.push({ x, y, depth, i, j, k });
+      }
+    }
+  }
+
+  // sort back to front
+  points.sort((a, b) => b.depth - a.depth);
+
+  for (const p of points) {
+    const a = p.depth * 0.7;
+    if (a < 0.05) continue;
+    ctx.fillStyle = `rgba(160, 210, 255, ${a})`;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 1.2 + p.depth * 1.8, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // soft golden time-strands (the "love transcends time" lines)
+  ctx.strokeStyle = `rgba(255, 200, 120, ${0.18 * fade})`;
+  ctx.lineWidth = 1;
+  for (let s = 0; s < 5; s++) {
+    ctx.beginPath();
+    for (let x = -W/2; x < W/2; x += 8) {
+      const y = Math.sin(x * 0.008 + t * 0.6 + s) * 80 + Math.cos(x * 0.005 + t * 0.3 + s * 2) * 40 + (s - 2) * 30;
+      if (x === -W/2) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+draw();
+
+// reveal quotes on scroll
+const obs = new IntersectionObserver(es => {
+  for (const e of es) {
+    if (e.isIntersecting) e.target.classList.add('visible');
+    else e.target.classList.remove('visible');
+  }
+}, { threshold: 0.4 });
+document.querySelectorAll('.quote').forEach(q => obs.observe(q));
+
+// hide hint after first scroll
+let hidden = false;
+window.addEventListener('scroll', () => {
+  if (!hidden && window.scrollY > 80) {
+    document.getElementById('hint').style.opacity = '0';
+    hidden = true;
+  }
+});
+
+// scene labels
+const labelEl = document.getElementById('label');
+function updateLabel() {
+  const p = scroll;
+  let label = '';
+  if (p < 0.18) label = '◦ EARTH';
+  else if (p < 0.42) label = '◦ HYPERSPACE';
+  else if (p < 0.62) label = '◦ WORMHOLE · SATURN';
+  else if (p < 0.85) label = '◦ GARGANTUA';
+  else label = '◦ TESSERACT';
+  labelEl.textContent = label;
+  labelEl.classList.toggle('visible', p > 0.02);
+  requestAnimationFrame(updateLabel);
+}
+updateLabel();
+
+// time-dilation clock — accelerates near black hole
+const start = performance.now();
+function tickClock() {
+  const elapsed = (performance.now() - start) / 1000;
+  // dilation factor swells as we approach the black hole
+  const dil = 1 + scroll * scroll * 12;
+  const t = elapsed * dil;
+  const h = String(Math.floor(t / 3600) % 100).padStart(2, '0');
+  const m = String(Math.floor(t / 60) % 60).padStart(2, '0');
+  const s = String(Math.floor(t) % 60).padStart(2, '0');
+  document.getElementById('clock').textContent = `T+ ${h}:${m}:${s}`;
+  requestAnimationFrame(tickClock);
+}
+tickClock();
+</script>
+</body>
+</html>
