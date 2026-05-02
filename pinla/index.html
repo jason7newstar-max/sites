@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PINLA — Discover Music Master Languages</title>
+<meta name="description" content="PINLA — a creative studio bridging music, technology, and experience design.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-0: #07041a;
+    --bg-1: #0e0830;
+    --bg-2: #150a3e;
+    --fg: #ffffff;
+    --fg-mute: rgba(255,255,255,0.68);
+    --fg-dim: rgba(255,255,255,0.42);
+    --glass: rgba(255,255,255,0.06);
+    --glass-strong: rgba(255,255,255,0.10);
+    --glass-line: rgba(255,255,255,0.14);
+    --glass-line-strong: rgba(255,255,255,0.24);
+    --accent-1: #b4a0ff;
+    --accent-2: #7df9ff;
+    --accent-3: #ff8ad8;
+    --display: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+    --body: 'Inter', 'Helvetica Neue', sans-serif;
+    --radius: 22px;
+    --radius-lg: 32px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg-0);
+    color: var(--fg);
+    font-family: var(--body);
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    position: relative;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; border: 0; cursor: pointer; background: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  /* === AURORA BACKGROUND LAYERS === */
+  .aurora {
+    position: fixed; inset: 0;
+    z-index: -2;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at top, var(--bg-2), var(--bg-0) 60%),
+      var(--bg-0);
+  }
+  .aurora::before, .aurora::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.55;
+    will-change: transform;
+  }
+  .aurora::before {
+    width: 60vw; height: 60vw;
+    left: -10vw; top: -10vw;
+    background: radial-gradient(circle, var(--accent-1), transparent 60%);
+    animation: float1 22s ease-in-out infinite alternate;
+  }
+  .aurora::after {
+    width: 50vw; height: 50vw;
+    right: -8vw; top: 30vh;
+    background: radial-gradient(circle, var(--accent-3), transparent 60%);
+    animation: float2 28s ease-in-out infinite alternate;
+  }
+  .blob3 {
+    position: fixed;
+    width: 45vw; height: 45vw;
+    left: 30vw; bottom: -15vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-2), transparent 60%);
+    filter: blur(120px);
+    opacity: 0.45;
+    z-index: -2;
+    animation: float3 26s ease-in-out infinite alternate;
+  }
+  @keyframes float1 { from { transform: translate(0,0) scale(1); } to { transform: translate(8vw, 6vh) scale(1.1); } }
+  @keyframes float2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-6vw, -8vh) scale(1.15); } }
+  @keyframes float3 { from { transform: translate(0,0) scale(1); } to { transform: translate(-5vw, -10vh) scale(1.1); } }
+
+  /* Subtle noise overlay for texture */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+
+  /* === LAYOUT === */
+  .wrap { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 clamp(1.25rem, 3vw, 2.5rem); }
+
+  /* === GLASS PRIMITIVE === */
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--glass-line);
+    border-radius: var(--radius);
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.25),
+      inset 0 1px 0 rgba(255,255,255,0.10);
+  }
+  .glass-strong {
+    background: var(--glass-strong);
+    backdrop-filter: blur(32px) saturate(200%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    border: 1px solid var(--glass-line-strong);
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 16px 60px rgba(0,0,0,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.14);
+  }
+
+  /* === NAV === */
+  .nav {
+    position: fixed; top: 1rem; left: 1rem; right: 1rem;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.85rem 1.25rem;
+    border-radius: 999px;
+    background: rgba(10, 5, 30, 0.45);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-line);
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    font-size: 0.95rem;
+  }
+  .brand .dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--accent-2); border-radius: 50%;
+    margin-right: 8px; transform: translateY(-1px);
+    box-shadow: 0 0 12px var(--accent-2);
+  }
+  .nav-links {
+    display: flex; gap: 0.25rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    font-weight: 500;
+  }
+  .nav-links a {
+    padding: 0.5rem 0.85rem;
+    border-radius: 999px;
+    color: var(--fg-mute);
+    transition: color .25s, background .25s;
+  }
+  .nav-links a:hover { color: var(--fg); background: rgba(255,255,255,0.06); }
+  .nav-cta {
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    background: var(--fg);
+    color: #0a0420;
+    transition: transform .25s, box-shadow .25s;
+  }
+  .nav-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(180,160,255,0.45);
+  }
+  @media (max-width: 880px) {
+    .nav-links { display: none; }
+  }
+
+  /* === HERO === */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 0 4rem;
+    position: relative;
+  }
+  .hero-grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 1000px) {
+    .hero-grid { grid-template-columns: 1.4fr 1fr; align-items: end; }
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg-mute);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-line);
+    margin-bottom: 2rem;
+  }
+  .hero-eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-2);
+    box-shadow: 0 0 10px var(--accent-2);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .hero-title {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title .grad {
+    background: linear-gradient(110deg, var(--accent-1), var(--accent-2) 50%, var(--accent-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 1.4vw, 1.18rem);
+    color: var(--fg-mute);
+    max-width: 36rem;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    padding: 0.95rem 1.6rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    transition: transform .25s, box-shadow .25s, background .25s;
+  }
+  .btn-primary {
+    background: var(--fg); color: #0a0420;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.20); }
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--glass-line);
+    backdrop-filter: blur(12px);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,0.10); }
+  .btn .arrow { display: inline-block; transition: transform .25s; }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  /* Hero stat card */
+  .hero-card {
+    padding: 1.75rem;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .hero-card h4 {
+    font-family: var(--display);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .hero-stat-row { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .hero-stat .num {
+    font-family: var(--display);
+    font-size: 2.4rem;
+    font-weight: 600;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-stat .lbl {
+    font-size: 0.78rem;
+    color: var(--fg-mute);
+    margin-top: 0.35rem;
+  }
+
+  /* === SECTION === */
+  section { padding: 6rem 0; position: relative; }
+  .sec-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap; }
+  .sec-tag {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: 0.75rem;
+    display: inline-block;
+  }
+  .sec-tag::before { content: "// "; color: var(--accent-2); }
+  .sec-title {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    max-width: 32rem;
+  }
+  .sec-desc {
+    color: var(--fg-mute);
+    max-width: 28rem;
+    font-size: 1rem;
+  }
+
+  /* === STUDIO === */
+  .about-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 880px) { .about-grid { grid-template-columns: 1.3fr 1fr; } }
+  .about-card { padding: 2.25rem; }
+  .about-card p {
+    font-size: 1.05rem;
+    color: var(--fg-mute);
+    margin-bottom: 1rem;
+  }
+  .about-card p:last-child { margin-bottom: 0; }
+  .pillar-list { display: grid; gap: 0.75rem; }
+  .pillar {
+    padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .pillar .icon {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+    display: grid; place-items: center;
+    font-family: var(--display); font-weight: 600;
+    font-size: 0.95rem;
+    color: #07041a;
+    flex-shrink: 0;
+  }
+  .pillar h5 { font-family: var(--display); font-size: 0.95rem; font-weight: 500; }
+  .pillar p { font-size: 0.82rem; color: var(--fg-mute); margin-top: 0.15rem; }
+
+  /* === TECH STACK === */
+  .tech-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .tech-card {
+    padding: 1.5rem;
+    transition: transform .35s ease, border-color .35s;
+  }
+  .tech-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--glass-line-strong);
+  }
+  .tech-card .num {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: var(--fg-dim);
+    margin-bottom: 1.5rem;
+  }
+  .tech-card h5 {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .tech-card p { font-size: 0.85rem; color: var(--fg-mute); }
+
+  /* === PROJECTS === */
+  .proj-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) { .proj-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1080px) { .proj-grid { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: auto auto; } }
+  .proj {
+    padding: 2rem;
+    min-height: 280px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    gap: 2rem;
+    position: relative; overflow: hidden;
+    transition: transform .35s ease;
+  }
+  .proj:hover { transform: translateY(-4px); }
+  .proj::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.10), transparent 40%);
+    opacity: 0; transition: opacity .35s;
+    pointer-events: none;
+  }
+  .proj:hover::after { opacity: 1; }
+  .proj-tag {
+    font-family: var(--display);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-2);
+  }
+  .proj h4 {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+  .proj p { font-size: 0.88rem; color: var(--fg-mute); }
+  .proj.feat { grid-column: span 1; }
+  @media (min-width: 1080px) { .proj.feat { grid-column: span 1; grid-row: span 2; min-height: 500px; } }
+  .proj.feat h4 { font-size: 2.2rem; }
+
+  /* === EXPERIENCES list === */
+  .xp-list { display: grid; gap: 0.75rem; }
+  .xp-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.25rem 1.75rem;
+    transition: background .25s;
+  }
+  .xp-row:hover { background: rgba(255,255,255,0.04); }
+  .xp-num {
+    font-family: var(--display);
+    font-size: 0.78rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.1em;
+  }
+  .xp-name { font-family: var(--display); font-size: 1.1rem; font-weight: 500; }
+  .xp-meta { font-size: 0.82rem; color: var(--fg-mute); }
+  @media (max-width: 720px) {
+    .xp-row { grid-template-columns: auto 1fr; }
+    .xp-meta { grid-column: 2; }
+  }
+
+  /* === GPT === */
+  .gpt-card {
+    padding: clamp(2rem, 5vw, 4rem);
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .gpt-card::before {
+    content: "";
+    position: absolute; inset: -50%;
+    background: conic-gradient(from 0deg at 50% 50%, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-1));
+    opacity: 0.15;
+    filter: blur(60px);
+    animation: spin 30s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .gpt-card > * { position: relative; }
+  .gpt-card h3 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .gpt-card p { color: var(--fg-mute); max-width: 36rem; margin: 0 auto 2rem; font-size: 1.05rem; }
+
+  /* === STORE / OOTD === */
+  .row-2 { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+  @media (min-width: 880px) { .row-2 { grid-template-columns: 1fr 1fr; } }
+  .feature-card {
+    padding: 2.25rem;
+    min-height: 320px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .feature-card .label {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+  .feature-card h3 {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0.6rem 0 1rem;
+  }
+  .feature-card p { color: var(--fg-mute); font-size: 0.95rem; max-width: 28rem; }
+  .feature-card .btn { align-self: flex-start; margin-top: 1.5rem; }
+
+  /* === CTA / Subscribe === */
+  .cta-card {
+    padding: clamp(2.5rem, 6vw, 5rem);
+    text-align: center;
+  }
+  .cta-card h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+  .cta-card p { color: var(--fg-mute); max-width: 36rem; margin: 0 auto 2.5rem; font-size: 1.05rem; }
+  .sub-form {
+    display: flex; gap: 0.5rem;
+    max-width: 500px; margin: 0 auto;
+    padding: 0.4rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--glass-line);
+    backdrop-filter: blur(12px);
+  }
+  .sub-form input {
+    flex: 1;
+    background: transparent; border: 0; outline: 0;
+    padding: 0.85rem 1.25rem;
+    color: var(--fg); font: inherit;
+    font-size: 0.95rem;
+  }
+  .sub-form input::placeholder { color: var(--fg-dim); }
+  .sub-form button {
+    background: var(--fg); color: #0a0420;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.85rem; letter-spacing: 0.08em;
+  }
+
+  /* === FOOTER === */
+  footer { padding: 4rem 0 3rem; }
+  .foot-grid {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+    padding: 2.5rem;
+  }
+  @media (min-width: 720px) { .foot-grid { grid-template-columns: 2fr 1fr 1fr; } }
+  .foot-grid h6 {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  .foot-grid a { display: block; padding: 0.3rem 0; color: var(--fg-mute); transition: color .2s; font-size: 0.92rem; }
+  .foot-grid a:hover { color: var(--fg); }
+  .foot-brand { font-family: var(--display); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
+  .foot-brand-sub { font-size: 0.92rem; color: var(--fg-mute); max-width: 22rem; }
+  .foot-bottom {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--glass-line);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    font-size: 0.78rem; color: var(--fg-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* selection */
+  ::selection { background: var(--accent-1); color: #07041a; }
+
+  /* fade-in on scroll */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<div class="aurora"></div>
+<div class="blob3"></div>
+
+<nav class="nav">
+  <a href="#top" class="brand"><span class="dot"></span>PINLA</a>
+  <div class="nav-links">
+    <a href="#studio">Studio</a>
+    <a href="#technology">Technology</a>
+    <a href="#experiences">Experiences</a>
+    <a href="#projects">Projects</a>
+    <a href="#gpt">GPT</a>
+    <a href="#store">Store</a>
+  </div>
+  <a href="#contact" class="nav-cta">Get in touch</a>
+</nav>
+
+<main id="top">
+
+  <!-- === HERO === -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <span class="hero-eyebrow"><span class="dot"></span>A creative studio · Est. ____</span>
+        <h1 class="hero-title">
+          Discover <span class="grad">Music</span><br>
+          Master <span class="grad">Languages</span>.
+        </h1>
+        <p class="hero-sub">
+          PINLA is a multidisciplinary studio at the intersection of sound, technology, and lived experience. We design products, performances, and tools that turn music into a language people speak together.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">See projects <span class="arrow">→</span></a>
+          <a href="#studio" class="btn btn-ghost">About the studio</a>
+        </div>
+      </div>
+
+      <div class="hero-card glass-strong reveal">
+        <div>
+          <h4>Currently</h4>
+          <p style="color: var(--fg);">Open for collaborations across music, brand, and emerging tech.</p>
+        </div>
+        <div class="hero-stat-row">
+          <div class="hero-stat">
+            <div class="num">__</div>
+            <div class="lbl">Projects shipped</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num">__</div>
+            <div class="lbl">Collaborators</div>
+          </div>
+          <div class="hero-stat">
+            <div class="num">__</div>
+            <div class="lbl">Cities</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === STUDIO === -->
+  <section id="studio">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <span class="sec-tag">Studio</span>
+          <h2 class="sec-title">A studio that listens before it speaks.</h2>
+        </div>
+        <p class="sec-desc">PINLA is built around a simple belief — that music is the most universal interface humans have ever made, and the studios that take it seriously will shape the next decade of culture.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card glass reveal">
+          <p>[Replace this paragraph with your studio's origin story — when PINLA was founded, who started it, and what the founding question was.]</p>
+          <p>[Replace this paragraph with what the studio does day to day — the kinds of projects, the kinds of collaborators, the kinds of outputs.]</p>
+          <p>[Replace this paragraph with your point of view — what you believe about music, technology, and people that makes PINLA different from a typical agency or label.]</p>
+        </div>
+
+        <div class="pillar-list reveal">
+          <div class="pillar glass">
+            <div class="icon">01</div>
+            <div>
+              <h5>Sound design</h5>
+              <p>Original scores, identity sound, immersive audio.</p>
+            </div>
+          </div>
+          <div class="pillar glass">
+            <div class="icon">02</div>
+            <div>
+              <h5>Live experiences</h5>
+              <p>Performances and installations that travel.</p>
+            </div>
+          </div>
+          <div class="pillar glass">
+            <div class="icon">03</div>
+            <div>
+              <h5>Tools &amp; products</h5>
+              <p>Software, hardware, and AI for creative practice.</p>
+            </div>
+          </div>
+          <div class="pillar glass">
+            <div class="icon">04</div>
+            <div>
+              <h5>Brand &amp; story</h5>
+              <p>How a sound becomes an identity people carry.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === TECHNOLOGY === -->
+  <section id="technology">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <span class="sec-tag">Technology</span>
+          <h2 class="sec-title">The toolkit behind the work.</h2>
+        </div>
+        <p class="sec-desc">A lightweight stack chosen for craft — not for hype. Each tool earns its place by what it lets us ship faster and feel sharper.</p>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech-card glass reveal">
+          <div class="num">01 / Audio</div>
+          <h5>Live engines</h5>
+          <p>Ableton, Max/MSP, modular synths, custom DSP.</p>
+        </div>
+        <div class="tech-card glass reveal">
+          <div class="num">02 / Visual</div>
+          <h5>Realtime systems</h5>
+          <p>TouchDesigner, Unreal, WebGL, Rive.</p>
+        </div>
+        <div class="tech-card glass reveal">
+          <div class="num">03 / Code</div>
+          <h5>Web &amp; mobile</h5>
+          <p>TypeScript, Next.js, React Native, Swift.</p>
+        </div>
+        <div class="tech-card glass reveal">
+          <div class="num">04 / AI</div>
+          <h5>Generative</h5>
+          <p>Models, agents, and pipelines tailored to creative practice.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === PROJECTS === -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <span class="sec-tag">Projects</span>
+          <h2 class="sec-title">Selected work.</h2>
+        </div>
+        <p class="sec-desc">A rotating cut of recent collaborations, releases, and commissions. [Replace these tiles with your real projects — title, partner, year.]</p>
+      </div>
+
+      <div class="proj-grid">
+        <article class="proj feat glass reveal" onmousemove="moveLight(event,this)">
+          <div>
+            <div class="proj-tag">Featured · 20__</div>
+            <h4>[Featured project title goes here]</h4>
+          </div>
+          <p>[A 1–2 sentence description of the work, the problem, and what PINLA contributed. The biggest tile is the studio's headline piece — pick something worth bragging about.]</p>
+        </article>
+
+        <article class="proj glass reveal" onmousemove="moveLight(event,this)">
+          <div class="proj-tag">Music · 20__</div>
+          <h4>[Project two]</h4>
+          <p>[Short description. Replace.]</p>
+        </article>
+
+        <article class="proj glass reveal" onmousemove="moveLight(event,this)">
+          <div class="proj-tag">Brand · 20__</div>
+          <h4>[Project three]</h4>
+          <p>[Short description. Replace.]</p>
+        </article>
+
+        <article class="proj glass reveal" onmousemove="moveLight(event,this)">
+          <div class="proj-tag">Live · 20__</div>
+          <h4>[Project four]</h4>
+          <p>[Short description. Replace.]</p>
+        </article>
+
+        <article class="proj glass reveal" onmousemove="moveLight(event,this)">
+          <div class="proj-tag">Tool · 20__</div>
+          <h4>[Project five]</h4>
+          <p>[Short description. Replace.]</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- === EXPERIENCES === -->
+  <section id="experiences">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <span class="sec-tag">Experiences</span>
+          <h2 class="sec-title">Performances, installations, and rooms we've built.</h2>
+        </div>
+        <p class="sec-desc">[Replace each row with a real event — name, venue or city, date.]</p>
+      </div>
+
+      <div class="xp-list glass reveal">
+        <div class="xp-row">
+          <div class="xp-num">001</div>
+          <div class="xp-name">[Event name]</div>
+          <div class="xp-meta">[Venue · City · 20__]</div>
+        </div>
+        <div class="xp-row">
+          <div class="xp-num">002</div>
+          <div class="xp-name">[Event name]</div>
+          <div class="xp-meta">[Venue · City · 20__]</div>
+        </div>
+        <div class="xp-row">
+          <div class="xp-num">003</div>
+          <div class="xp-name">[Event name]</div>
+          <div class="xp-meta">[Venue · City · 20__]</div>
+        </div>
+        <div class="xp-row">
+          <div class="xp-num">004</div>
+          <div class="xp-name">[Event name]</div>
+          <div class="xp-meta">[Venue · City · 20__]</div>
+        </div>
+        <div class="xp-row">
+          <div class="xp-num">005</div>
+          <div class="xp-name">[Event name]</div>
+          <div class="xp-meta">[Venue · City · 20__]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === GPT === -->
+  <section id="gpt">
+    <div class="wrap">
+      <div class="gpt-card glass-strong reveal">
+        <span class="sec-tag">PINLA · GPT</span>
+        <h3>An AI that thinks in music.</h3>
+        <p>[Replace this paragraph with a description of your GPT — what it does, who it's for, and what makes it different from a generic chatbot. A line about how to access it goes in the button below.]</p>
+        <a href="#" class="btn btn-primary">Try PINLA GPT <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- === STORE & OOTD === -->
+  <section id="store">
+    <div class="wrap">
+      <div class="row-2">
+        <div class="feature-card glass reveal">
+          <div>
+            <div class="label">Store</div>
+            <h3>Objects from the studio.</h3>
+            <p>Records, prints, hardware, and small runs from PINLA and friends. [Replace with a real product line description.]</p>
+          </div>
+          <a href="#" class="btn btn-ghost">Shop the drop <span class="arrow">→</span></a>
+        </div>
+        <div class="feature-card glass reveal">
+          <div>
+            <div class="label">OOTD</div>
+            <h3>Daily uniform, studio cut.</h3>
+            <p>An ongoing diary of what the studio is wearing, listening to, and shipping. [Replace with what OOTD actually is for PINLA.]</p>
+          </div>
+          <a href="#" class="btn btn-ghost">See today's look <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- === CTA === -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="cta-card glass-strong reveal">
+        <span class="sec-tag">Subscribe</span>
+        <h2>Stay in the room.</h2>
+        <p>Drops, sessions, and field notes from the studio. No spam — just signal.</p>
+        <form class="sub-form" onsubmit="event.preventDefault(); alert('Thanks! We\\'ll be in touch.');">
+          <input type="email" placeholder="you@somewhere.com" required>
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- === FOOTER === -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid glass">
+        <div>
+          <div class="foot-brand">PINLA</div>
+          <p class="foot-brand-sub">A studio for music, technology, and experience design.</p>
+        </div>
+        <div>
+          <h6>Sitemap</h6>
+          <a href="#studio">Studio</a>
+          <a href="#technology">Technology</a>
+          <a href="#experiences">Experiences</a>
+          <a href="#projects">Projects</a>
+          <a href="#gpt">GPT</a>
+          <a href="#store">Store</a>
+        </div>
+        <div>
+          <h6>Contact</h6>
+          <a href="mailto:hello@pinla.studio">[email@example.com]</a>
+          <a href="#">[Instagram @____]</a>
+          <a href="#">[WeChat ID: ____]</a>
+          <a href="#">[City · Country]</a>
+        </div>
+      </div>
+      <div class="foot-bottom wrap" style="padding-left:0;padding-right:0;">
+        <span>© 20__ PINLA. All rights reserved.</span>
+        <span>Discover Music · Master Languages</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  // light-follow on project cards
+  function moveLight(e, el) {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+  }
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
