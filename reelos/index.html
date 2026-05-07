@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReelOS — Set-and-forget short-form video for any local business</title>
+<meta name="description" content="Upload 10 photos. We generate 5 Reels a week and post them to your IG/TikTok. From $30/mo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbfbfb;
+    --bg-elev: #ffffff;
+    --bg-card: #f4f4f4;
+    --line: rgba(0,0,0,0.10);
+    --ink: #0a0a0a;
+    --ink-mute: #5a5a5a;
+    --ink-dim: #a0a0a0;
+    --accent: #635bff;
+    --accent-2: #00d4ff;
+    --display: 'Geist', system-ui, sans-serif;
+    --body: 'Geist', system-ui, sans-serif;
+    --mono: 'Geist Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+    background: rgba(251,251,251,0.85);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { max-width: 1200px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: var(--ink); text-decoration: none; font-size: 14px; }
+  .btn { display: inline-block; padding: 11px 22px; background: var(--ink); color: white; border: none; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: transform 0.15s; }
+  .btn:hover { transform: translateY(-1px); background: var(--accent); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  .btn-outline:hover { background: var(--ink); color: white; }
+
+  .hero { max-width: 1100px; margin: 0 auto; padding: 100px 32px 60px; text-align: center; }
+  .hero .eyebrow { display: inline-block; padding: 6px 14px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 999px; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; margin-bottom: 28px; }
+  .hero .eyebrow .pip { display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .hero h1 { font-family: var(--display); font-size: clamp(44px, 7vw, 84px); line-height: 1.02; font-weight: 700; letter-spacing: -2px; margin-bottom: 24px; }
+  .hero h1 em { background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-style: normal; }
+  .hero .sub { font-size: clamp(17px, 2vw, 21px); color: var(--ink-mute); max-width: 660px; margin: 0 auto 40px; }
+  .hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .hero .badge-row { margin-top: 30px; color: var(--ink-dim); font-size: 13px; }
+
+  /* HOW */
+  .how { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .how h2 { font-family: var(--display); font-size: clamp(32px, 4.5vw, 52px); margin-bottom: 12px; font-weight: 700; letter-spacing: -1px; }
+  .how p.lead { color: var(--ink-mute); font-size: 17px; margin-bottom: 50px; max-width: 600px; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; }
+  .step { }
+  .step-num { font-family: var(--mono); font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+  .step h3 { font-family: var(--display); font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .step p { font-size: 14px; color: var(--ink-mute); }
+
+  /* INDUSTRIES */
+  .ind { background: var(--bg-elev); padding: 80px 32px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .ind-inner { max-width: 1100px; margin: 0 auto; }
+  .ind h2 { font-family: var(--display); font-size: clamp(32px, 4.5vw, 52px); margin-bottom: 12px; font-weight: 700; letter-spacing: -1px; }
+  .ind p.lead { color: var(--ink-mute); font-size: 17px; margin-bottom: 40px; }
+  .ind-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .ind-card {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 14px;
+    padding: 28px 22px;
+    text-align: center;
+  }
+  .ind-card .icon { font-size: 36px; margin-bottom: 12px; }
+  .ind-card h3 { font-family: var(--display); font-size: 17px; font-weight: 600; }
+  .ind-card p { font-size: 12px; color: var(--ink-mute); margin-top: 6px; }
+
+  /* PRICING */
+  .pricing { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .pricing h2 { font-family: var(--display); font-size: clamp(32px, 4.5vw, 52px); text-align: center; margin-bottom: 12px; font-weight: 700; letter-spacing: -1px; }
+  .pricing p.lead { text-align: center; color: var(--ink-mute); margin-bottom: 50px; font-size: 17px; }
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+  .tier {
+    background: white; border: 1.5px solid var(--line); border-radius: 18px; padding: 32px 26px; position: relative;
+  }
+  .tier.featured { border-color: var(--accent); }
+  .tier .badge { position: absolute; top: -13px; left: 26px; background: var(--accent); color: white; padding: 5px 12px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .tier h3 { font-family: var(--display); font-size: 20px; font-weight: 600; }
+  .tier .price { font-family: var(--display); font-size: 44px; font-weight: 700; margin-top: 14px; line-height: 1; letter-spacing: -1px; }
+  .tier .price span { font-size: 16px; color: var(--ink-dim); font-weight: 400; }
+  .tier .price-note { font-size: 12px; color: var(--ink-dim); margin-top: 4px; }
+  .tier ul { list-style: none; margin: 24px 0; }
+  .tier li { padding: 8px 0; font-size: 14px; color: var(--ink-mute); border-bottom: 1px solid var(--line); display: flex; align-items: flex-start; gap: 8px; }
+  .tier li:before { content: "✓"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  .cta-section { padding: 80px 32px; text-align: center; max-width: 720px; margin: 0 auto; }
+  .cta-section h2 { font-family: var(--display); font-size: clamp(36px, 5vw, 56px); font-weight: 700; margin-bottom: 16px; line-height: 1.05; letter-spacing: -1.5px; }
+  .cta-section p { color: var(--ink-mute); margin-bottom: 36px; font-size: 17px; }
+
+  .waitlist { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 40px; margin: 0 auto; max-width: 480px; }
+  .waitlist h3 { font-family: var(--display); font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .waitlist p { font-size: 14px; color: var(--ink-mute); margin-bottom: 20px; }
+
+  footer { padding: 40px 32px; text-align: center; color: var(--ink-dim); font-size: 13px; border-top: 1px solid var(--line); margin-top: 40px; }
+  footer .links { margin-bottom: 14px; }
+  footer .links a { color: var(--ink-mute); text-decoration: none; margin: 0 12px; }
+
+  @media (max-width: 720px) { .nav-links a:not(.btn) { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">Reel<span>OS</span></div>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#industries">Industries</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#waitlist" class="btn">Join Waitlist</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="eyebrow"><span class="pip"></span>Coming soon · Q3 2026</span>
+  <h1>Set-and-forget<br/><em>short-form video</em><br/>for any local business.</h1>
+  <p class="sub">Upload 10 photos. We generate 5 Reels per week and post them to your Instagram and TikTok. From $30/month.</p>
+  <div class="cta-row">
+    <a href="#waitlist" class="btn">Join Waitlist</a>
+    <a href="#how" class="btn btn-outline">How It Works</a>
+  </div>
+  <div class="badge-row">⚡ 7-day free trial · cancel anytime</div>
+</section>
+
+<section class="how" id="how">
+  <h2>From photos to posted Reels in<br/>under 10 minutes.</h2>
+  <p class="lead">Built for owner-operators. Designed by a NYC studio that runs the same engine for itself.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Pick your industry</h3>
+      <p>Fitness · beauty · real estate · food · legal · other. Each has 6 templates tuned to convert.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Upload photos</h3>
+      <p>10 photos minimum. Existing menu/portfolio/space shots work fine. We re-use them across the month.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Connect IG & TikTok</h3>
+      <p>One-click OAuth. We never touch your password.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Approve weekly</h3>
+      <p>Every Sunday we draft 5 Reels for the week. You hit "approve all" or edit. Posts auto-schedule.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ind" id="industries">
+  <div class="ind-inner">
+    <h2>Built for these industries.</h2>
+    <p class="lead">More on the way. Suggest yours when you join the waitlist.</p>
+    <div class="ind-grid">
+      <div class="ind-card"><div class="icon">💪</div><h3>Fitness Studios</h3><p>Yoga · Pilates · CrossFit</p></div>
+      <div class="ind-card"><div class="icon">💅</div><h3>Beauty / Salon</h3><p>Nails · hair · lashes</p></div>
+      <div class="ind-card"><div class="icon">🏠</div><h3>Real Estate</h3><p>Listings + neighborhoods</p></div>
+      <div class="ind-card"><div class="icon">🍔</div><h3>Food & Drink</h3><p>Cafes · restaurants · bars</p></div>
+      <div class="ind-card"><div class="icon">⚖️</div><h3>Professional</h3><p>Legal · accounting · consulting</p></div>
+      <div class="ind-card"><div class="icon">✨</div><h3>Other</h3><p>Suggest yours</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <h2>Pricing</h2>
+  <p class="lead">7-day free trial. Cancel anytime. No setup fee.</p>
+  <div class="tiers">
+    <div class="tier">
+      <h3>STARTER</h3>
+      <div class="price">$30<span>/mo</span></div>
+      <div class="price-note">8 Reels/month, IG only</div>
+      <ul>
+        <li>2 Reels per week</li>
+        <li>Instagram auto-publish</li>
+        <li>4 industry templates</li>
+        <li>Email support</li>
+      </ul>
+    </div>
+    <div class="tier featured">
+      <span class="badge">MOST POPULAR</span>
+      <h3>GROWTH</h3>
+      <div class="price">$60<span>/mo</span></div>
+      <div class="price-note">20 Reels/month, IG + TT</div>
+      <ul>
+        <li>5 Reels per week</li>
+        <li>Instagram + TikTok</li>
+        <li>All 24 templates</li>
+        <li>AI caption variants</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <h3>PRO</h3>
+      <div class="price">$120<span>/mo</span></div>
+      <div class="price-note">40+ Reels, all platforms</div>
+      <ul>
+        <li>10 Reels per week</li>
+        <li>IG + TikTok + YouTube Shorts</li>
+        <li>Custom BGM library</li>
+        <li>A/B template testing</li>
+        <li>1:1 onboarding call</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="waitlist">
+  <h2>Get early access<br/>(50% off first 3 months)</h2>
+  <p>We're launching to the first 100 customers. Join the list to get notified + a discount code.</p>
+  <div class="waitlist">
+    <h3>Be first in line.</h3>
+    <p>Email us — we'll DM you when the trial opens.</p>
+    <a href="mailto:hi@newhinyc.com?subject=ReelOS%20Waitlist&body=Industry%3A%20%0AInstagram%20%2F%20Web%3A%20" class="btn" style="display:block; text-align:center;">Email to Join</a>
+  </div>
+</section>
+
+<footer>
+  <div class="links">
+    <a href="https://www.instagram.com/newhinyc/">@newhinyc</a>
+    <a href="/histudio/">HI Studio</a>
+    <a href="/hisongs/">HI Songs</a>
+    <a href="/hibeats/">HI Beats</a>
+    <a href="/hithings/">HI Things</a>
+  </div>
+  <div>ReelOS · NYC · Set-and-forget short-form for any local business</div>
+  <div style="margin-top:6px; color: var(--ink-dim);">© 2026 ReelOS.</div>
+</footer>
+
+</body>
+</html>
