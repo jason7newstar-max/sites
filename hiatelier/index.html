@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HI Atelier — Premium websites with motion + 3D</title>
+<meta name="description" content="A NYC web studio building one-page sites that feel alive. Spline 3D, motion graphics, scroll choreography. From $2K.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-elev: #0f0f0f;
+    --bg-card: #161616;
+    --line: rgba(255,255,255,0.08);
+    --fg: #ffffff;
+    --fg-mute: #b0b0b0;
+    --fg-dim: #666;
+    --accent: #f5b041;
+    --accent-2: #ff6f61;
+    --gold: #d4af37;
+    --display: 'Cormorant Garamond', 'Songti SC', serif;
+    --body: 'Inter', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--body); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+
+  /* Animated gradient orb behind hero */
+  .orb {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle at 30% 30%, var(--accent) 0%, var(--accent-2) 35%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    pointer-events: none;
+    animation: float 14s ease-in-out infinite;
+    z-index: 0;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    50% { transform: translate(-45%, -55%) scale(1.15) rotate(180deg); }
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+    background: rgba(10,10,10,0.7);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { max-width: 1200px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 26px; font-style: italic; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: var(--fg); text-decoration: none; font-size: 14px; }
+  .btn {
+    display: inline-block;
+    padding: 13px 26px;
+    background: var(--fg); color: var(--bg);
+    border: none; border-radius: 999px;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer; text-decoration: none;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); background: var(--accent); }
+  .btn-outline { background: transparent; color: var(--fg); border: 1.5px solid rgba(255,255,255,0.3); }
+  .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: var(--fg); }
+
+  .hero {
+    position: relative;
+    max-width: 1100px; margin: 0 auto;
+    padding: 120px 32px 100px; text-align: center;
+    z-index: 1;
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero .eyebrow {
+    display: inline-block; padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px;
+    font-size: 11px; font-weight: 500; letter-spacing: 1.5px;
+    margin-bottom: 32px;
+    color: var(--accent);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(52px, 9vw, 120px);
+    line-height: 0.95; font-weight: 400; letter-spacing: -3px;
+    margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); font-weight: 600; }
+  .hero h1 strong { font-weight: 700; }
+  .hero .sub {
+    font-size: clamp(17px, 2vw, 22px);
+    color: var(--fg-mute); max-width: 660px; margin: 0 auto 40px;
+    font-weight: 300;
+  }
+  .hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 24px 0;
+    background: var(--bg-elev);
+  }
+  .marquee-track {
+    display: flex; gap: 60px;
+    animation: scroll 30s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: var(--display);
+    font-size: 24px; font-style: italic;
+    color: var(--fg-dim);
+  }
+  .marquee-item.dot { color: var(--accent); }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* SERVICES */
+  .services { padding: 100px 32px; max-width: 1100px; margin: 0 auto; }
+  .services h2 { font-family: var(--display); font-size: clamp(40px, 6vw, 68px); font-weight: 600; margin-bottom: 60px; line-height: 1.05; letter-spacing: -1px; }
+  .services h2 em { font-style: italic; color: var(--accent); }
+  .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .svc {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 18px;
+    padding: 36px 28px;
+    transition: transform 0.2s, border 0.2s;
+  }
+  .svc:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .svc .num { font-family: var(--display); font-size: 18px; font-style: italic; color: var(--accent); }
+  .svc h3 { font-family: var(--display); font-size: 28px; font-weight: 600; margin-top: 8px; margin-bottom: 12px; line-height: 1.1; }
+  .svc p { font-size: 14px; color: var(--fg-mute); margin-bottom: 18px; }
+  .svc ul { list-style: none; }
+  .svc li { padding: 6px 0; font-size: 13px; color: var(--fg-mute); display: flex; gap: 8px; }
+  .svc li:before { content: "·"; color: var(--accent); font-weight: 700; }
+
+  /* PRICING */
+  .pricing { background: var(--bg-elev); padding: 100px 32px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .pricing-inner { max-width: 1100px; margin: 0 auto; }
+  .pricing h2 { font-family: var(--display); font-size: clamp(40px, 6vw, 68px); font-weight: 600; text-align: center; margin-bottom: 12px; letter-spacing: -1px; }
+  .pricing h2 em { font-style: italic; color: var(--accent); }
+  .pricing p.lead { text-align: center; color: var(--fg-mute); font-size: 17px; margin-bottom: 60px; }
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .tier {
+    background: var(--bg-card); border: 1.5px solid var(--line); border-radius: 22px;
+    padding: 40px 30px; position: relative;
+  }
+  .tier.featured { border-color: var(--accent); }
+  .tier .badge {
+    position: absolute; top: -13px; left: 30px;
+    background: var(--accent); color: var(--bg);
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+  }
+  .tier h3 { font-family: var(--display); font-size: 30px; font-weight: 600; }
+  .tier .price { font-family: var(--display); font-size: 56px; font-weight: 600; margin-top: 14px; line-height: 1; letter-spacing: -2px; }
+  .tier .price span { font-size: 18px; color: var(--fg-dim); font-weight: 400; }
+  .tier .price-note { font-size: 13px; color: var(--fg-dim); margin-top: 6px; font-style: italic; }
+  .tier ul { list-style: none; margin: 28px 0; }
+  .tier li {
+    padding: 10px 0; font-size: 14px; color: var(--fg-mute);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .tier li:before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  /* PORTFOLIO */
+  .portfolio { padding: 100px 32px; max-width: 1100px; margin: 0 auto; }
+  .portfolio h2 { font-family: var(--display); font-size: clamp(40px, 6vw, 68px); font-weight: 600; margin-bottom: 12px; letter-spacing: -1px; }
+  .portfolio h2 em { font-style: italic; color: var(--accent); }
+  .portfolio p.lead { color: var(--fg-mute); font-size: 17px; margin-bottom: 50px; max-width: 600px; }
+  .port-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .port-item {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .port-item:hover { transform: translateY(-4px); }
+  .port-cover {
+    aspect-ratio: 16/10;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 28px; font-weight: 700; color: white;
+    font-style: italic;
+  }
+  .port-cover.dark {
+    background: linear-gradient(135deg, #1a1410, #4a3d33);
+  }
+  .port-cover.cream {
+    background: linear-gradient(135deg, #faf6ee, #c89a3e);
+    color: var(--bg);
+  }
+  .port-cover.violet {
+    background: linear-gradient(135deg, #6b3651, #c44569);
+  }
+  .port-cover.green {
+    background: linear-gradient(135deg, #0d1117, #ff7849);
+  }
+  .port-meta { padding: 24px; }
+  .port-meta h3 { font-family: var(--display); font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  .port-meta p { font-size: 13px; color: var(--fg-dim); }
+  .port-meta a { display: inline-block; margin-top: 10px; font-size: 13px; color: var(--accent); text-decoration: none; }
+
+  /* CTA */
+  .cta-section {
+    padding: 120px 32px; text-align: center;
+    background: linear-gradient(180deg, transparent, rgba(245,176,65,0.08));
+  }
+  .cta-section h2 {
+    font-family: var(--display);
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 400; margin-bottom: 20px; line-height: 1; letter-spacing: -2px;
+  }
+  .cta-section h2 em { font-style: italic; color: var(--accent); font-weight: 600; }
+  .cta-section p { color: var(--fg-mute); margin-bottom: 40px; font-size: 18px; max-width: 540px; margin-left: auto; margin-right: auto; }
+
+  footer { padding: 40px 32px; text-align: center; color: var(--fg-dim); font-size: 13px; border-top: 1px solid var(--line); }
+  footer .links { margin-bottom: 14px; }
+  footer .links a { color: var(--fg-mute); text-decoration: none; margin: 0 12px; }
+
+  @media (max-width: 720px) { .nav-links a:not(.btn) { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">HI <span>Atelier</span></div>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#portfolio">Work</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#cta" class="btn">Start a project</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="orb"></div>
+  <div class="hero-content">
+    <span class="eyebrow">NYC · WEB STUDIO · EST. 2026</span>
+    <h1>Websites that<br/><em>move</em> you,<br/>not just <strong>load</strong>.</h1>
+    <p class="sub">A NYC studio building one-page sites with Spline 3D, motion graphics, and scroll choreography. For brands that won't settle for a template.</p>
+    <div class="cta-row">
+      <a href="#cta" class="btn">Start a project</a>
+      <a href="#portfolio" class="btn btn-outline">See the work</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Spline 3D</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">GSAP Motion</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">Three.js</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">WebGL</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">Scroll Choreography</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">Custom Type</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">Spline 3D</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">GSAP Motion</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">Three.js</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">WebGL</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">Scroll Choreography</span><span class="marquee-item dot">·</span>
+    <span class="marquee-item">Custom Type</span><span class="marquee-item dot">·</span>
+  </div>
+</div>
+
+<section class="services" id="services">
+  <h2>What we make<br/><em>for the brands that show up.</em></h2>
+  <div class="svc-grid">
+    <div class="svc">
+      <div class="num">01</div>
+      <h3>Brand sites with motion</h3>
+      <p>One-page or multi-page brand websites with Spline 3D scenes, GSAP scroll animations, and custom typography choices.</p>
+      <ul>
+        <li>Hero with 3D centerpiece</li>
+        <li>Scroll-linked animations</li>
+        <li>Custom illustrations / 3D models</li>
+        <li>Mobile-tuned performance</li>
+      </ul>
+    </div>
+    <div class="svc">
+      <div class="num">02</div>
+      <h3>Restaurant + bar sites</h3>
+      <p>Beyond menu PDFs — sites that match the dining experience. Reservation integration, menu galleries, story-driven scrolls.</p>
+      <ul>
+        <li>OpenTable/Resy embeds</li>
+        <li>Photo gallery with motion</li>
+        <li>Story-driven menu scroll</li>
+        <li>SEO + Google profile sync</li>
+      </ul>
+    </div>
+    <div class="svc">
+      <div class="num">03</div>
+      <h3>Music + creative portfolios</h3>
+      <p>For DJs, producers, designers, photographers. Audio-reactive 3D, embedded players, project case studies.</p>
+      <ul>
+        <li>Audio-reactive visuals</li>
+        <li>Spotify / SoundCloud embed</li>
+        <li>Booking form + mailing list</li>
+        <li>Press + EPK ready</li>
+      </ul>
+    </div>
+    <div class="svc">
+      <div class="num">04</div>
+      <h3>Product launch / waitlist</h3>
+      <p>Pre-launch landing pages for SaaS, drops, and events. High-conversion + memorable enough to share.</p>
+      <ul>
+        <li>Waitlist + email collection</li>
+        <li>Countdown + ticker</li>
+        <li>Spline product render</li>
+        <li>Analytics + A/B tested</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <h2>Three <em>tiers.</em></h2>
+    <p class="lead">Fixed price. No "hourly" surprises. 50% upfront, 50% on launch.</p>
+    <div class="tiers">
+      <div class="tier">
+        <h3>SPARK</h3>
+        <div class="price">$2K<span>—$3K</span></div>
+        <div class="price-note">single page · 1-2 weeks</div>
+        <ul>
+          <li>One-page brand site</li>
+          <li>1 Spline 3D scene</li>
+          <li>Scroll animations (basic)</li>
+          <li>Mobile responsive</li>
+          <li>Vercel deploy + custom domain</li>
+          <li>2 rounds of revisions</li>
+        </ul>
+        <a href="#cta" class="btn btn-outline" style="width:100%; text-align:center;">Get a quote</a>
+      </div>
+      <div class="tier featured">
+        <span class="badge">MOST POPULAR</span>
+        <h3>FLOW</h3>
+        <div class="price">$5K<span>—$8K</span></div>
+        <div class="price-note">5-page site · 3-4 weeks</div>
+        <ul>
+          <li>Up to 5 pages</li>
+          <li>2 Spline 3D scenes</li>
+          <li>Scroll choreography (advanced)</li>
+          <li>Custom illustrations / micro-interactions</li>
+          <li>CMS option (Sanity / Notion)</li>
+          <li>3 rounds of revisions</li>
+          <li>30-day post-launch tweaks</li>
+        </ul>
+        <a href="#cta" class="btn" style="width:100%; text-align:center;">Get a quote</a>
+      </div>
+      <div class="tier">
+        <h3>SIGNATURE</h3>
+        <div class="price">$10K<span>+</span></div>
+        <div class="price-note">flagship site · 5-8 weeks</div>
+        <ul>
+          <li>Full custom site</li>
+          <li>3+ Spline 3D scenes (custom modeled)</li>
+          <li>Original 3D / illustrations</li>
+          <li>Original sound design (HI Beats)</li>
+          <li>Custom CMS</li>
+          <li>Unlimited revisions during build</li>
+          <li>90-day support</li>
+        </ul>
+        <a href="#cta" class="btn btn-outline" style="width:100%; text-align:center;">Inquire</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="portfolio" id="portfolio">
+  <h2>Recent <em>work.</em></h2>
+  <p class="lead">Sister brands we built and run ourselves — same studio you'd hire.</p>
+  <div class="port-grid">
+    <a href="/histudio/" class="port-item" style="text-decoration:none; color:inherit;">
+      <div class="port-cover cream">HI Studio</div>
+      <div class="port-meta"><h3>HI Studio</h3><p>Reel agency · NYC restaurants</p><span style="color:var(--accent); font-size:13px;">View site →</span></div>
+    </a>
+    <a href="/hisongs/" class="port-item" style="text-decoration:none; color:inherit;">
+      <div class="port-cover violet">HI Songs</div>
+      <div class="port-meta"><h3>HI Songs</h3><p>Custom AI song commissions</p><span style="color:var(--accent); font-size:13px;">View site →</span></div>
+    </a>
+    <a href="/hibeats/" class="port-item" style="text-decoration:none; color:inherit;">
+      <div class="port-cover dark">HI Beats</div>
+      <div class="port-meta"><h3>HI Beats</h3><p>Music library for short-form</p><span style="color:var(--accent); font-size:13px;">View site →</span></div>
+    </a>
+    <a href="/hithings/" class="port-item" style="text-decoration:none; color:inherit;">
+      <div class="port-cover green">HI Things</div>
+      <div class="port-meta"><h3>HI Things</h3><p>NYC weekend events feed</p><span style="color:var(--accent); font-size:13px;">View site →</span></div>
+    </a>
+    <a href="/reelos/" class="port-item" style="text-decoration:none; color:inherit;">
+      <div class="port-cover" style="background:linear-gradient(135deg,#635bff,#00d4ff);">ReelOS</div>
+      <div class="port-meta"><h3>ReelOS</h3><p>Multi-tenant Reel SaaS</p><span style="color:var(--accent); font-size:13px;">View site →</span></div>
+    </a>
+    <a href="/afterhours/" class="port-item" style="text-decoration:none; color:inherit;">
+      <div class="port-cover" style="background:linear-gradient(135deg,#050505,#d4ff3f);">AFTERHOURS</div>
+      <div class="port-meta"><h3>AFTERHOURS</h3><p>NYC DJ agency landing</p><span style="color:var(--accent); font-size:13px;">View site →</span></div>
+    </a>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <h2>Tell us about<br/><em>your project.</em></h2>
+  <p>10-minute call. Free quote within 48 hours. We turn down ~60% of inquiries — we only take work we can do well.</p>
+  <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+    <a href="https://t.me/newhinyc" class="btn">Telegram</a>
+    <a href="mailto:hi@newhinyc.com?subject=HI%20Atelier%20%E2%80%94%20Project%20inquiry" class="btn btn-outline">Email</a>
+  </div>
+</section>
+
+<footer>
+  <div class="links">
+    <a href="https://www.instagram.com/newhinyc/">@newhinyc</a>
+    <a href="/histudio/">HI Studio</a>
+    <a href="/hisongs/">HI Songs</a>
+    <a href="/hibeats/">HI Beats</a>
+    <a href="/hithings/">HI Things</a>
+    <a href="/reelos/">ReelOS</a>
+  </div>
+  <div>HI Atelier · NYC · Premium web design with motion + 3D</div>
+  <div style="margin-top:6px; color: var(--fg-dim);">© 2026 HI Atelier.</div>
+</footer>
+
+</body>
+</html>
