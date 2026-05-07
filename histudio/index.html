@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HI Studio — 纽约餐厅日更短视频代运营</title>
+<meta name="description" content="给纽约餐厅做每日 Reels / Shorts / TikTok。无需拍摄,无需出镜。我们的厨房是 AI + 你的菜。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf6ee;
+    --bg-elev: #fffdf7;
+    --bg-card: #fff;
+    --ink: #1a1410;
+    --ink-mute: #4a3d33;
+    --ink-dim: #8a7a6a;
+    --line: rgba(26,20,16,0.12);
+    --accent: #c2410c;
+    --accent-deep: #7c2d12;
+    --gold: #b8860b;
+    --display: 'Noto Serif SC', 'Songti SC', serif;
+    --body: 'Inter', 'PingFang SC', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+    background: rgba(250,246,238,0.85);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav {
+    max-width: 1200px; margin: 0 auto;
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--accent); }
+  .nav a { color: var(--ink); text-decoration: none; font-size: 14px; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .btn {
+    display: inline-block;
+    padding: 11px 22px;
+    background: var(--ink);
+    color: var(--bg-elev);
+    border: none;
+    border-radius: 999px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); background: var(--accent); }
+  .btn-outline {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--bg-elev); }
+
+  /* HERO */
+  .hero {
+    max-width: 1100px; margin: 0 auto;
+    padding: 100px 32px 80px;
+    text-align: center;
+  }
+  .hero .eyebrow {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--accent);
+    color: white;
+    border-radius: 999px;
+    font-size: 12px; font-weight: 600; letter-spacing: 1px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.1; font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .hero .sub {
+    font-size: clamp(17px, 2vw, 21px);
+    color: var(--ink-mute);
+    max-width: 680px; margin: 0 auto 40px;
+  }
+  .hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* PROOF */
+  .proof {
+    background: var(--ink);
+    color: var(--bg-elev);
+    padding: 80px 32px;
+  }
+  .proof-inner { max-width: 1100px; margin: 0 auto; }
+  .proof h2 {
+    font-family: var(--display);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .proof h2 em { color: var(--accent); font-style: normal; }
+  .proof p.lead { color: rgba(255,255,255,0.7); font-size: 17px; margin-bottom: 40px; max-width: 600px; }
+  .reels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .reel {
+    aspect-ratio: 9/16;
+    background: #222;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+  .reel iframe { width: 100%; height: 100%; border: 0; }
+  .reel-fallback {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%;
+    color: rgba(255,255,255,0.5);
+    text-align: center; padding: 20px;
+    font-size: 13px;
+  }
+  .reel-fallback strong { display: block; color: white; font-size: 16px; margin-bottom: 6px; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 32px;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .stat-num { font-family: var(--display); font-size: 44px; font-weight: 900; color: var(--accent); }
+  .stat-label { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px; }
+
+  /* WHY */
+  .why { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .why h2 {
+    font-family: var(--display);
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700; margin-bottom: 12px;
+  }
+  .why p.lead { color: var(--ink-mute); font-size: 17px; margin-bottom: 40px; max-width: 600px; }
+  .pain-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .pain-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 28px;
+    border-radius: 14px;
+  }
+  .pain-card .x { color: var(--accent); font-weight: 600; font-size: 13px; letter-spacing: 1px; margin-bottom: 8px; }
+  .pain-card h3 { font-family: var(--display); font-size: 19px; margin-bottom: 8px; }
+  .pain-card p { font-size: 14px; color: var(--ink-mute); }
+
+  /* PRICING */
+  .pricing { background: var(--bg-elev); padding: 80px 32px; }
+  .pricing-inner { max-width: 1100px; margin: 0 auto; }
+  .pricing h2 {
+    font-family: var(--display);
+    font-size: clamp(28px, 4vw, 40px);
+    text-align: center; margin-bottom: 12px;
+  }
+  .pricing p.lead { text-align: center; color: var(--ink-mute); margin-bottom: 50px; }
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 950px; margin: 0 auto;
+  }
+  .tier {
+    background: white;
+    border: 1.5px solid var(--line);
+    border-radius: 18px;
+    padding: 36px 28px;
+    position: relative;
+  }
+  .tier.featured { border-color: var(--accent); transform: scale(1.02); }
+  .tier .badge {
+    position: absolute; top: -13px; left: 28px;
+    background: var(--accent); color: white;
+    padding: 5px 12px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+  }
+  .tier h3 { font-family: var(--display); font-size: 22px; font-weight: 700; }
+  .tier .price { font-family: var(--display); font-size: 44px; font-weight: 900; margin-top: 14px; }
+  .tier .price span { font-size: 16px; color: var(--ink-dim); font-weight: 400; }
+  .tier .price-note { font-size: 13px; color: var(--ink-dim); }
+  .tier ul { list-style: none; margin: 28px 0; }
+  .tier li {
+    padding: 9px 0;
+    font-size: 14px;
+    color: var(--ink-mute);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .tier li:before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+  .tier li.minus { color: var(--ink-dim); text-decoration: line-through; }
+  .tier li.minus:before { content: "—"; color: var(--ink-dim); }
+
+  /* PROCESS */
+  .process { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .process h2 {
+    font-family: var(--display);
+    font-size: clamp(28px, 4vw, 40px);
+    text-align: center; margin-bottom: 50px;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+  }
+  .step {
+    text-align: center;
+  }
+  .step-num {
+    width: 56px; height: 56px; margin: 0 auto 16px;
+    border-radius: 50%;
+    background: var(--ink); color: var(--bg-elev);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 22px; font-weight: 900;
+  }
+  .step h3 { font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .step p { font-size: 14px; color: var(--ink-mute); }
+
+  /* CTA */
+  .cta-section {
+    background: var(--ink);
+    color: var(--bg-elev);
+    padding: 80px 32px;
+    text-align: center;
+  }
+  .cta-section h2 {
+    font-family: var(--display);
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 900; margin-bottom: 16px;
+  }
+  .cta-section h2 em { color: var(--accent); font-style: italic; }
+  .cta-section p { color: rgba(255,255,255,0.7); margin-bottom: 36px; font-size: 17px; max-width: 540px; margin-left: auto; margin-right: auto; }
+  .cta-section .btn { background: var(--accent); color: white; }
+  .cta-section .btn-outline { color: white; border-color: rgba(255,255,255,0.3); }
+  .cta-section .btn-outline:hover { background: rgba(255,255,255,0.1); color: white; }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 32px;
+    text-align: center;
+    color: var(--ink-dim);
+    font-size: 13px;
+    border-top: 1px solid var(--line);
+  }
+  footer .links { margin-bottom: 14px; }
+  footer .links a { color: var(--ink-mute); text-decoration: none; margin: 0 12px; }
+
+  @media (max-width: 720px) {
+    .nav-links { display: none; }
+    .nav-links .btn { display: inline-block; }
+    header .nav-links { display: flex; gap: 0; }
+    header .nav-links a:not(.btn) { display: none; }
+    .tier.featured { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">HI <span>STUDIO</span></div>
+    <div class="nav-links">
+      <a href="#proof">作品</a>
+      <a href="#pricing">价格</a>
+      <a href="#process">流程</a>
+      <a href="#cta" class="btn">免费咨询</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">NYC · NJ · LI · CT</span>
+  <h1>每天一条 <em>Reel</em>。<br/>不用你拍,不用你写。</h1>
+  <p class="sub">我们给纽约餐厅日更 YouTube Shorts / Instagram Reels / TikTok。AI 流水线 + 真菜照,你只需要把菜端上桌。</p>
+  <div class="cta-row">
+    <a href="#cta" class="btn">看看我们能怎么帮你</a>
+    <a href="#proof" class="btn btn-outline">先看作品</a>
+  </div>
+</section>
+
+<section class="proof" id="proof">
+  <div class="proof-inner">
+    <h2>我们自己的品牌:<em>@newhinyc</em></h2>
+    <p class="lead">同一个流水线,我们 14 天发了 30+ 条短视频。下面随便抽 4 条 — 你的餐厅版可以一样:</p>
+    <div class="reels-grid">
+      <div class="reel"><iframe src="https://www.youtube.com/embed/_jAJIyWLJIo" allowfullscreen></iframe></div>
+      <div class="reel"><iframe src="https://www.youtube.com/embed/myO_EA0jYlU" allowfullscreen></iframe></div>
+      <div class="reel"><iframe src="https://www.youtube.com/embed/PX_eR7JNeEg" allowfullscreen></iframe></div>
+      <div class="reel"><iframe src="https://www.youtube.com/embed/aCnR3yEiHEs" allowfullscreen></iframe></div>
+    </div>
+    <div class="stats">
+      <div><div class="stat-num">30+</div><div class="stat-label">视频 / 月 (我们自己)</div></div>
+      <div><div class="stat-num">3</div><div class="stat-label">平台同步发布</div></div>
+      <div><div class="stat-num">22 秒</div><div class="stat-label">每条标准长度</div></div>
+      <div><div class="stat-num">$0</div><div class="stat-label">摄像师 / 场地费</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <h2>纽约餐厅老板最大的<em>三个坑</em></h2>
+  <p class="lead">我们一个一个补。</p>
+  <div class="pain-list">
+    <div class="pain-card">
+      <div class="x">坑 #1</div>
+      <h3>没人持续做内容</h3>
+      <p>请专人 $4-8K/月,外包视频公司一条 $300+。我们一个月一条以下。</p>
+    </div>
+    <div class="pain-card">
+      <div class="x">坑 #2</div>
+      <h3>素材不够</h3>
+      <p>我们用你已有的菜品照 + Google 评论照。需要补,我们驾车上门拍 30 分钟,够用一个月。</p>
+    </div>
+    <div class="pain-card">
+      <div class="x">坑 #3</div>
+      <h3>三平台不同步</h3>
+      <p>YT Shorts / IG Reels / TikTok 我们一键同步发,文案分平台优化。</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <h2>三档价格</h2>
+    <p class="lead">月付,随时停。前两周不满意全退。</p>
+    <div class="tiers">
+      <div class="tier">
+        <h3>STARTER</h3>
+        <div class="price">$200<span>/月</span></div>
+        <div class="price-note">每月 8 条短视频</div>
+        <ul>
+          <li>YT Shorts + IG Reels 自动发</li>
+          <li>2 道招牌菜每周轮换</li>
+          <li>文案中英双语</li>
+          <li>每月数据报告</li>
+          <li class="minus">TikTok 同步</li>
+          <li class="minus">现场补拍</li>
+        </ul>
+        <a href="#cta" class="btn btn-outline" style="width:100%; text-align:center;">选 STARTER</a>
+      </div>
+      <div class="tier featured">
+        <span class="badge">最受欢迎</span>
+        <h3>GROWTH</h3>
+        <div class="price">$400<span>/月</span></div>
+        <div class="price-note">每月 20 条 + TikTok</div>
+        <ul>
+          <li>YT + IG + TikTok 三平台</li>
+          <li>每周 5 条新内容</li>
+          <li>5+ 道菜品轮换</li>
+          <li>每月一次现场 30 min 补拍</li>
+          <li>专属 BGM(我们音乐工作室原创)</li>
+          <li>双周对接电话</li>
+        </ul>
+        <a href="#cta" class="btn" style="width:100%; text-align:center;">选 GROWTH</a>
+      </div>
+      <div class="tier">
+        <h3>SIGNATURE</h3>
+        <div class="price">$800<span>/月</span></div>
+        <div class="price-note">每月 30+ 条 + 全方位</div>
+        <ul>
+          <li>所有 GROWTH 内容</li>
+          <li>每周 7+ 条 + 节假日特别篇</li>
+          <li>每周 1 次现场补拍</li>
+          <li>原创主题曲 (Suno + 工作室)</li>
+          <li>评论代回复 + DM 管理</li>
+          <li>季度品牌升级</li>
+        </ul>
+        <a href="#cta" class="btn btn-outline" style="width:100%; text-align:center;">选 SIGNATURE</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <h2>4 步开跑</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><h3>10 分钟微信沟通</h3><p>菜品 / 风格 / 节奏。免费,不签约。</p></div>
+    <div class="step"><div class="step-num">2</div><h3>样片 48h 出</h3><p>免费 1 条样片。满意再签。</p></div>
+    <div class="step"><div class="step-num">3</div><h3>开通账号</h3><p>YT/IG/TikTok 我们接管发布,所有权归你。</p></div>
+    <div class="step"><div class="step-num">4</div><h3>每天发,每周报</h3><p>稳定输出,数据透明。</p></div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <h2>就一条样片,<em>免费</em>。</h2>
+  <p>把你的餐厅信息发给我们 — 名字、地址、3 张菜照。48 小时收到一条样片视频。不满意,完全没事。</p>
+  <div class="cta-row" style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+    <a href="https://t.me/newhinyc" class="btn">Telegram 联系</a>
+    <a href="mailto:hi@newhinyc.com?subject=HI%20Studio%20%E5%85%8D%E8%B4%B9%E6%A0%B7%E7%89%87" class="btn btn-outline">发邮件</a>
+  </div>
+</section>
+
+<footer>
+  <div class="links">
+    <a href="https://www.instagram.com/newhinyc/">@newhinyc</a>
+    <a href="https://www.youtube.com/@Jason2-f5y">YouTube</a>
+    <a href="#cta">联系</a>
+  </div>
+  <div>HI Studio · 纽约 / 新泽西 / 长岛 / 康州 · 餐厅短视频代运营</div>
+  <div style="margin-top:6px; color: var(--ink-dim);">© 2026 HI Studio. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
