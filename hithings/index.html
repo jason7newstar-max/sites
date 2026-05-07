@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HI Things — 大纽约周末干啥</title>
+<meta name="description" content="纽约 / 新泽西 / 长岛 / 康州 每个周末都在发生什么。每天 3 条短视频,你滑一滑就知道周末怎么过。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-elev: #161b22;
+    --bg-card: #1c2330;
+    --line: rgba(255,255,255,0.08);
+    --fg: #ffffff;
+    --fg-mute: #9ba3af;
+    --fg-dim: #555c66;
+    --accent: #ff7849;
+    --accent-2: #fbbf24;
+    --display: 'Bricolage Grotesque', sans-serif;
+    --body: 'Inter', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+    background: rgba(13,17,23,0.85);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { max-width: 1200px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--display); font-weight: 800; font-size: 24px; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: var(--fg); text-decoration: none; font-size: 14px; }
+  .btn { display: inline-block; padding: 11px 22px; background: var(--accent); color: white; border: none; border-radius: 999px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; transition: transform 0.15s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: var(--fg); border: 1.5px solid var(--fg); }
+  .btn-outline:hover { background: var(--fg); color: var(--bg); }
+
+  .hero { max-width: 1100px; margin: 0 auto; padding: 100px 32px 80px; text-align: center; }
+  .hero .eyebrow { display: inline-block; padding: 6px 14px; background: var(--accent); color: white; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 28px; }
+  .hero h1 { font-family: var(--display); font-size: clamp(48px, 8vw, 96px); line-height: 1; font-weight: 800; letter-spacing: -2px; margin-bottom: 24px; }
+  .hero h1 em { color: var(--accent); font-style: italic; }
+  .hero h1 .y { color: var(--accent-2); }
+  .hero .sub { font-size: clamp(17px, 2vw, 21px); color: var(--fg-mute); max-width: 640px; margin: 0 auto 40px; }
+  .hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  .geo { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .geo h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 48px); margin-bottom: 12px; font-weight: 700; }
+  .geo h2 em { color: var(--accent); font-style: italic; }
+  .geo p.lead { color: var(--fg-mute); font-size: 17px; margin-bottom: 40px; max-width: 600px; }
+  .geo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .geo-card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px;
+  }
+  .geo-card h3 { font-family: var(--display); font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .geo-card p { font-size: 13px; color: var(--fg-mute); }
+  .geo-card .count { display: inline-block; margin-top: 10px; font-size: 12px; color: var(--accent); font-weight: 600; }
+
+  .what { padding: 80px 32px; background: var(--bg-elev); }
+  .what-inner { max-width: 1100px; margin: 0 auto; }
+  .what h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 48px); margin-bottom: 40px; font-weight: 700; }
+  .what h2 em { color: var(--accent); font-style: italic; }
+  .types { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .type {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .type .icon { font-size: 28px; margin-bottom: 8px; }
+  .type h3 { font-family: var(--display); font-size: 14px; font-weight: 600; }
+
+  /* Monetize */
+  .biz { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .biz h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 48px); margin-bottom: 40px; font-weight: 700; }
+  .biz h2 em { color: var(--accent-2); font-style: italic; }
+  .biz-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .biz-card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 16px; padding: 28px;
+  }
+  .biz-card .num { font-family: var(--display); font-size: 36px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
+  .biz-card h3 { font-family: var(--display); font-size: 19px; font-weight: 700; margin-bottom: 8px; }
+  .biz-card p { font-size: 14px; color: var(--fg-mute); }
+
+  .cta-section { background: var(--accent); color: white; padding: 80px 32px; text-align: center; }
+  .cta-section h2 { font-family: var(--display); font-size: clamp(36px, 5vw, 56px); font-weight: 800; margin-bottom: 16px; }
+  .cta-section p { color: rgba(255,255,255,0.85); margin-bottom: 36px; font-size: 17px; max-width: 540px; margin-left: auto; margin-right: auto; }
+  .cta-section .btn { background: white; color: var(--accent); }
+  .cta-section .btn-outline { color: white; border-color: rgba(255,255,255,0.5); }
+  .cta-section .btn-outline:hover { background: rgba(255,255,255,0.15); color: white; }
+
+  footer { padding: 40px 32px; text-align: center; color: var(--fg-dim); font-size: 13px; border-top: 1px solid var(--line); }
+  footer .links { margin-bottom: 14px; }
+  footer .links a { color: var(--fg-mute); text-decoration: none; margin: 0 12px; }
+
+  @media (max-width: 720px) { .nav-links a:not(.btn) { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">HI <span>THINGS</span></div>
+    <div class="nav-links">
+      <a href="#geo">范围</a>
+      <a href="#what">类别</a>
+      <a href="#biz">合作</a>
+      <a href="https://www.instagram.com/" class="btn">关注 @hithingsny</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">NYC · NJ · LI · CT · 周末</span>
+  <h1>这<em>周末</em>,<br/>大纽约都在<span class="y">干啥</span>?</h1>
+  <p class="sub">每天 3 条 30 秒短视频,YouTube/Instagram/TikTok 同步发。从市中心音乐节到长岛海边市场,你滑一滑就知道周末怎么过。</p>
+  <div class="cta-row">
+    <a href="https://www.instagram.com/" class="btn">关注 @hithingsny</a>
+    <a href="#biz" class="btn btn-outline">活动方合作</a>
+  </div>
+</section>
+
+<section class="geo" id="geo">
+  <h2>覆盖<em>大纽约都市圈</em></h2>
+  <p class="lead">每天开车都在跑。每个区域 ≥ 1 条精选活动,每周近百条选项。</p>
+  <div class="geo-grid">
+    <div class="geo-card"><h3>NYC 五区</h3><p>曼哈顿 · 布鲁克林 · 皇后 · 布朗克斯 · 史泰登</p><span class="count">每日 1+ 条</span></div>
+    <div class="geo-card"><h3>新泽西</h3><p>泽西市 · 新瓦克 · 普林斯顿 · 大西洋城</p><span class="count">每日 1 条</span></div>
+    <div class="geo-card"><h3>长岛</h3><p>纳苏 · 苏福克 · 汉普顿</p><span class="count">每周 3-4 条</span></div>
+    <div class="geo-card"><h3>康涅狄格</h3><p>纽黑文 · 斯坦福德 · 格林威治</p><span class="count">每周 2-3 条</span></div>
+  </div>
+</section>
+
+<section class="what" id="what">
+  <div class="what-inner">
+    <h2>覆盖<em>所有有意思的事</em></h2>
+    <div class="types">
+      <div class="type"><div class="icon">🎵</div><h3>演唱会</h3></div>
+      <div class="type"><div class="icon">🎨</div><h3>展览 / 美术馆</h3></div>
+      <div class="type"><div class="icon">🍔</div><h3>美食节 / 市集</h3></div>
+      <div class="type"><div class="icon">🏃</div><h3>跑步 / 户外</h3></div>
+      <div class="type"><div class="icon">🎬</div><h3>电影节 / 放映</h3></div>
+      <div class="type"><div class="icon">🍻</div><h3>派对 / 夜生活</h3></div>
+      <div class="type"><div class="icon">🛍️</div><h3>跳蚤 / 古董</h3></div>
+      <div class="type"><div class="icon">🎭</div><h3>戏剧 / 表演</h3></div>
+      <div class="type"><div class="icon">⚽</div><h3>体育赛事</h3></div>
+      <div class="type"><div class="icon">🎄</div><h3>节假日特别</h3></div>
+    </div>
+  </div>
+</section>
+
+<section class="biz" id="biz">
+  <h2>给<em>活动方</em>的合作选项</h2>
+  <div class="biz-cards">
+    <div class="biz-card">
+      <div class="num">$50</div>
+      <h3>SPOTLIGHT 置顶</h3>
+      <p>当周精选位置 · 30 秒专属视频 · 跨平台首位置顶 · 官方账号 + 故事推送</p>
+    </div>
+    <div class="biz-card">
+      <div class="num">$200</div>
+      <h3>SPONSORED 周精选</h3>
+      <p>5 条相关 Reel 中提及 + 周末头图 + Instagram Story 5 条相关推送 + 链接到票务</p>
+    </div>
+    <div class="biz-card">
+      <div class="num">分成</div>
+      <h3>票务联盟 (默认全活动)</h3>
+      <p>SeatGeek / Eventbrite / Fever 联盟链接 · 我们引流,平台分成 5-15%</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>办活动?<br/>免费曝光这周。</h2>
+  <p>把活动信息发给我们 — 名称、日期、地点、票务链接。免费推一次,合适我们再聊付费置顶。</p>
+  <a href="https://t.me/newhinyc" class="btn">Telegram 联系</a>
+</section>
+
+<footer>
+  <div class="links">
+    <a href="https://www.instagram.com/">@hithingsny</a>
+    <a href="/histudio/">HI Studio</a>
+    <a href="/hisongs/">HI Songs</a>
+    <a href="/hibeats/">HI Beats</a>
+  </div>
+  <div>HI Things · NYC · NJ · LI · CT · 周末干啥</div>
+  <div style="margin-top:6px; color: var(--fg-dim);">© 2026 HI Things.</div>
+</footer>
+
+</body>
+</html>
