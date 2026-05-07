@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HI Songs — 一首属于你们的原创歌</title>
+<meta name="description" content="婚礼 / 周年 / 生日 / 求婚 / 商业 jingle — 我们用 AI + 真音乐人写一首独一无二的原创歌。48 小时交付。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --bg-elev: #fffaf0;
+    --bg-card: #fff;
+    --ink: #14110d;
+    --ink-mute: #4a3f30;
+    --ink-dim: #8a7a60;
+    --line: rgba(20,17,13,0.12);
+    --gold: #b8860b;
+    --rose: #c44569;
+    --plum: #6b3651;
+    --display: 'Cormorant Garamond', 'Songti SC', serif;
+    --body: 'Inter', 'PingFang SC', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+    background: rgba(245,240,232,0.85);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { max-width: 1100px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 26px; font-style: italic; }
+  .logo span { color: var(--rose); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: var(--ink); text-decoration: none; font-size: 14px; }
+  .btn {
+    display: inline-block;
+    padding: 13px 26px;
+    background: var(--ink); color: var(--bg-elev);
+    border: none; border-radius: 999px;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer; text-decoration: none;
+    transition: transform 0.15s, background 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); background: var(--rose); }
+  .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  .btn-outline:hover { background: var(--ink); color: var(--bg-elev); }
+
+  /* HERO */
+  .hero { max-width: 900px; margin: 0 auto; padding: 100px 32px 80px; text-align: center; }
+  .hero .eyebrow { display: inline-block; padding: 6px 16px; background: var(--rose); color: white; border-radius: 999px; font-size: 12px; font-weight: 500; letter-spacing: 1px; margin-bottom: 32px; }
+  .hero h1 { font-family: var(--display); font-size: clamp(42px, 7vw, 88px); line-height: 1.05; font-weight: 700; letter-spacing: -1px; margin-bottom: 24px; }
+  .hero h1 em { font-style: italic; color: var(--rose); }
+  .hero .sub { font-size: clamp(17px, 2vw, 22px); color: var(--ink-mute); max-width: 640px; margin: 0 auto 40px; font-weight: 300; }
+  .hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* USE CASES */
+  .uses { background: var(--bg-elev); padding: 80px 32px; }
+  .uses-inner { max-width: 1100px; margin: 0 auto; }
+  .uses h2 { font-family: var(--display); font-size: clamp(32px, 4.5vw, 48px); text-align: center; margin-bottom: 12px; font-weight: 600; }
+  .uses h2 em { font-style: italic; color: var(--rose); }
+  .uses p.lead { text-align: center; color: var(--ink-mute); margin-bottom: 50px; font-size: 17px; }
+  .use-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .use-card {
+    background: white; border: 1px solid var(--line); border-radius: 16px;
+    padding: 32px 24px; text-align: center;
+    transition: transform 0.2s;
+  }
+  .use-card:hover { transform: translateY(-4px); }
+  .use-icon { font-size: 38px; margin-bottom: 14px; }
+  .use-card h3 { font-family: var(--display); font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+  .use-card p { font-size: 14px; color: var(--ink-mute); }
+  .use-card .price { display: inline-block; margin-top: 14px; font-weight: 600; color: var(--rose); }
+
+  /* PRICING */
+  .pricing { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .pricing h2 { font-family: var(--display); font-size: clamp(32px, 4.5vw, 48px); text-align: center; font-weight: 600; margin-bottom: 12px; }
+  .pricing p.lead { text-align: center; color: var(--ink-mute); margin-bottom: 50px; font-size: 17px; }
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .tier {
+    background: white; border: 1.5px solid var(--line); border-radius: 18px; padding: 36px 28px; position: relative;
+  }
+  .tier.featured { border-color: var(--rose); }
+  .tier .badge {
+    position: absolute; top: -13px; left: 28px;
+    background: var(--rose); color: white;
+    padding: 5px 14px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+  }
+  .tier h3 { font-family: var(--display); font-size: 26px; font-weight: 600; }
+  .tier .price { font-family: var(--display); font-size: 52px; font-weight: 700; margin-top: 14px; line-height: 1; }
+  .tier .price span { font-size: 16px; color: var(--ink-dim); font-weight: 400; }
+  .tier .price-note { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+  .tier ul { list-style: none; margin: 28px 0; }
+  .tier li {
+    padding: 9px 0;
+    font-size: 14px;
+    color: var(--ink-mute);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .tier li:before { content: "♪"; color: var(--rose); font-weight: 700; flex-shrink: 0; }
+
+  /* SAMPLES */
+  .samples { background: var(--ink); color: var(--bg-elev); padding: 80px 32px; }
+  .samples-inner { max-width: 900px; margin: 0 auto; }
+  .samples h2 { font-family: var(--display); font-size: clamp(32px, 4.5vw, 48px); margin-bottom: 16px; font-weight: 600; }
+  .samples h2 em { color: var(--rose); font-style: italic; }
+  .samples p.lead { color: rgba(255,255,255,0.7); font-size: 17px; margin-bottom: 40px; max-width: 600px; }
+  .sample-list { display: grid; gap: 14px; }
+  .sample {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px; padding: 24px;
+    display: flex; align-items: center; gap: 20px;
+    transition: background 0.15s;
+  }
+  .sample:hover { background: rgba(255,255,255,0.08); }
+  .sample-num {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--rose); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 20px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .sample-info { flex: 1; }
+  .sample-info h3 { font-family: var(--display); font-size: 20px; font-weight: 600; }
+  .sample-info p { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .sample-tag {
+    font-size: 11px; padding: 4px 10px; background: rgba(196,69,105,0.2); color: var(--rose);
+    border-radius: 999px; letter-spacing: 1px;
+  }
+
+  /* PROCESS */
+  .process { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .process h2 { font-family: var(--display); font-size: clamp(32px, 4.5vw, 48px); text-align: center; font-weight: 600; margin-bottom: 50px; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; }
+  .step { text-align: center; }
+  .step-num { width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%; background: var(--rose); color: white; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 22px; font-weight: 700; }
+  .step h3 { font-family: var(--display); font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+  .step p { font-size: 14px; color: var(--ink-mute); }
+
+  /* CTA */
+  .cta-section { background: var(--rose); color: white; padding: 80px 32px; text-align: center; }
+  .cta-section h2 { font-family: var(--display); font-size: clamp(36px, 5vw, 56px); font-weight: 700; margin-bottom: 16px; font-style: italic; }
+  .cta-section p { color: rgba(255,255,255,0.85); margin-bottom: 36px; font-size: 17px; max-width: 540px; margin-left: auto; margin-right: auto; }
+  .cta-section .btn { background: white; color: var(--rose); }
+  .cta-section .btn:hover { background: var(--ink); color: white; transform: translateY(-1px); }
+  .cta-section .btn-outline { color: white; border-color: rgba(255,255,255,0.5); }
+  .cta-section .btn-outline:hover { background: rgba(255,255,255,0.15); color: white; }
+
+  footer { padding: 40px 32px; text-align: center; color: var(--ink-dim); font-size: 13px; border-top: 1px solid var(--line); }
+  footer .links { margin-bottom: 14px; }
+  footer .links a { color: var(--ink-mute); text-decoration: none; margin: 0 12px; }
+
+  @media (max-width: 720px) {
+    .nav-links a:not(.btn) { display: none; }
+    .tier.featured { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">HI <span>Songs</span></div>
+    <div class="nav-links">
+      <a href="#uses">场景</a>
+      <a href="#pricing">价格</a>
+      <a href="#samples">样品</a>
+      <a href="#cta" class="btn">下单</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">PERSONALIZED · ORIGINAL</span>
+  <h1>一首属于<em>他</em>的歌。<br/>48 小时,你拥有它。</h1>
+  <p class="sub">婚礼 · 周年 · 生日 · 求婚 · 品牌 jingle — 我们用 AI 写词谱曲,音乐人精修,真人生成可商用版权。</p>
+  <div class="cta-row">
+    <a href="#cta" class="btn">开始定制</a>
+    <a href="#samples" class="btn btn-outline">先听样品</a>
+  </div>
+</section>
+
+<section class="uses" id="uses">
+  <div class="uses-inner">
+    <h2>什么时候<em>需要一首歌</em></h2>
+    <p class="lead">能写词的场合,都能成为一首歌。</p>
+    <div class="use-grid">
+      <div class="use-card"><div class="use-icon">💍</div><h3>婚礼第一支舞</h3><p>把你们的故事写进 first dance 的旋律</p><span class="price">$249 起</span></div>
+      <div class="use-card"><div class="use-icon">🎂</div><h3>生日 / 周年</h3><p>给最爱的人一份没人有过的礼物</p><span class="price">$79 起</span></div>
+      <div class="use-card"><div class="use-icon">💎</div><h3>求婚 / 表白</h3><p>用一首专属歌完成那一刻</p><span class="price">$149 起</span></div>
+      <div class="use-card"><div class="use-icon">🏪</div><h3>品牌 jingle</h3><p>餐厅 / 店铺 / 健身房 主题曲,商用 30/15/6 秒切版</p><span class="price">$399 起</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <h2>定制档位</h2>
+  <p class="lead">每档都包含独家版权 — 你拥有这首歌。</p>
+  <div class="tiers">
+    <div class="tier">
+      <h3>BASIC</h3>
+      <div class="price">$79</div>
+      <div class="price-note">个人纪念,30 秒</div>
+      <ul>
+        <li>个性化歌词(中或英)</li>
+        <li>2 个版本(人声 + 纯音乐)</li>
+        <li>30 秒 MP3</li>
+        <li>48h 内交付</li>
+        <li>非商业使用</li>
+      </ul>
+      <a href="#cta" class="btn btn-outline" style="width:100%; text-align:center;">选 BASIC</a>
+    </div>
+    <div class="tier featured">
+      <span class="badge">最受欢迎</span>
+      <h3>DELUXE</h3>
+      <div class="price">$149</div>
+      <div class="price-note">完整体验,60 秒</div>
+      <ul>
+        <li>定制歌词 + 4 个版本</li>
+        <li>60 秒完整版</li>
+        <li>歌词 MV(MP4 视频)</li>
+        <li>2 次免费修改</li>
+        <li>非商业使用</li>
+      </ul>
+      <a href="#cta" class="btn" style="width:100%; text-align:center;">选 DELUXE</a>
+    </div>
+    <div class="tier">
+      <h3>WEDDING</h3>
+      <div class="price">$249</div>
+      <div class="price-note">婚礼级,3 分钟</div>
+      <ul>
+        <li>所有 DELUXE 内容</li>
+        <li>3 分钟完整版</li>
+        <li>视频通话 1 次共创</li>
+        <li>多次修改</li>
+        <li>母带级精修</li>
+      </ul>
+      <a href="#cta" class="btn btn-outline" style="width:100%; text-align:center;">选 WEDDING</a>
+    </div>
+    <div class="tier">
+      <h3>JINGLE</h3>
+      <div class="price">$399</div>
+      <div class="price-note">商业可用,多版本</div>
+      <ul>
+        <li>商用版权许可</li>
+        <li>30/15/6 秒广告切版</li>
+        <li>3 种风格备选</li>
+        <li>无限修改</li>
+        <li>专属交付包</li>
+      </ul>
+      <a href="#cta" class="btn btn-outline" style="width:100%; text-align:center;">选 JINGLE</a>
+    </div>
+  </div>
+</section>
+
+<section class="samples" id="samples">
+  <div class="samples-inner">
+    <h2>样品库 · <em>5 个场景</em></h2>
+    <p class="lead">每首都是真实定制风格的样品。下单后我们按你的故事重新写。</p>
+    <div class="sample-list">
+      <div class="sample">
+        <div class="sample-num">1</div>
+        <div class="sample-info"><h3>"First Dance" — 婚礼</h3><p>indie-pop · 60 秒 · 钢琴 + 弦乐</p></div>
+        <span class="sample-tag">DELUXE</span>
+      </div>
+      <div class="sample">
+        <div class="sample-num">2</div>
+        <div class="sample-info"><h3>"10 Years Today" — 周年</h3><p>柔和民谣 · 中文 · 60 秒</p></div>
+        <span class="sample-tag">DELUXE</span>
+      </div>
+      <div class="sample">
+        <div class="sample-num">3</div>
+        <div class="sample-info"><h3>"Happy 7" — 儿童生日</h3><p>儿歌 pop · 30 秒 · 卡通 MV</p></div>
+        <span class="sample-tag">BASIC</span>
+      </div>
+      <div class="sample">
+        <div class="sample-num">4</div>
+        <div class="sample-info"><h3>"Will You" — 求婚</h3><p>纯音乐钢琴 + 人声 ad-lib · 90 秒</p></div>
+        <span class="sample-tag">WEDDING</span>
+      </div>
+      <div class="sample">
+        <div class="sample-num">5</div>
+        <div class="sample-info"><h3>"HI Café Theme" — 餐厅 jingle</h3><p>upbeat indie · 30/15/6 秒切版</p></div>
+        <span class="sample-tag">JINGLE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <h2>4 步交付</h2>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><h3>故事问卷</h3><p>姓名、关系、回忆、想要的情绪。10 分钟填完。</p></div>
+    <div class="step"><div class="step-num">2</div><h3>歌词初稿</h3><p>我们写,你审。改到满意再进音乐。</p></div>
+    <div class="step"><div class="step-num">3</div><h3>音乐生成 + 精修</h3><p>AI 起样,音乐人调整 mix。</p></div>
+    <div class="step"><div class="step-num">4</div><h3>48h 内交付</h3><p>MP3/MP4 直接发给你。版权归你。</p></div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <h2>把故事变成<br/>一首歌</h2>
+  <p>现在下单,48 小时听到第一稿。不满意,完全没事 — 不收费。</p>
+  <div class="cta-row" style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+    <a href="https://t.me/newhinyc" class="btn">Telegram 联系</a>
+    <a href="mailto:hi@newhinyc.com?subject=HI%20Songs%20%E5%AE%9A%E5%88%B6" class="btn btn-outline">发邮件</a>
+  </div>
+</section>
+
+<footer>
+  <div class="links">
+    <a href="https://www.instagram.com/newhinyc/">@newhinyc</a>
+    <a href="#cta">联系</a>
+    <a href="/histudio/">HI Studio</a>
+  </div>
+  <div>HI Songs · 一人一首 · 中英双语</div>
+  <div style="margin-top:6px; color: var(--ink-dim);">© 2026 HI Songs. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
