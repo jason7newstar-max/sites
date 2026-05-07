@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HI Beats — Music for short-form creators</title>
+<meta name="description" content="Royalty-free music designed for TikTok, Reels, and Shorts. Made by NYC music studio + AI. Drop-ready hooks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-elev: #131313;
+    --bg-card: #1a1a1a;
+    --line: rgba(255,255,255,0.08);
+    --fg: #ffffff;
+    --fg-mute: #a0a0a0;
+    --fg-dim: #555;
+    --accent: #d4ff3f;
+    --accent-deep: #a8d617;
+    --display: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+    --body: 'Inter', 'Helvetica Neue', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--body); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  header {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(12px);
+    background: rgba(10,10,10,0.85);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { max-width: 1200px; margin: 0 auto; padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--display); font-weight: 700; font-size: 22px; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: var(--fg); text-decoration: none; font-size: 14px; }
+  .btn {
+    display: inline-block;
+    padding: 11px 22px;
+    background: var(--accent); color: var(--bg);
+    border: none; border-radius: 999px;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; text-decoration: none;
+    transition: transform 0.15s, opacity 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); opacity: 0.9; }
+  .btn-outline { background: transparent; color: var(--fg); border: 1.5px solid var(--fg); }
+  .btn-outline:hover { background: var(--fg); color: var(--bg); }
+
+  /* HERO */
+  .hero { max-width: 1100px; margin: 0 auto; padding: 100px 32px 80px; text-align: center; }
+  .hero .eyebrow { display: inline-block; padding: 6px 14px; background: var(--accent); color: var(--bg); border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 28px; }
+  .hero h1 { font-family: var(--display); font-size: clamp(48px, 8vw, 96px); line-height: 1; font-weight: 700; letter-spacing: -2px; margin-bottom: 24px; }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero .sub { font-size: clamp(17px, 2vw, 21px); color: var(--fg-mute); max-width: 640px; margin: 0 auto 40px; }
+  .hero .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* CATEGORIES */
+  .cats { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .cats h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 48px); margin-bottom: 12px; font-weight: 700; }
+  .cats h2 em { color: var(--accent); font-style: italic; }
+  .cats p.lead { color: var(--fg-mute); font-size: 17px; margin-bottom: 40px; max-width: 600px; }
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .cat {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px; transition: border 0.15s;
+  }
+  .cat:hover { border-color: var(--accent); }
+  .cat .icon { font-size: 32px; margin-bottom: 12px; }
+  .cat h3 { font-family: var(--display); font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .cat p { font-size: 13px; color: var(--fg-mute); }
+  .cat .count { display: inline-block; margin-top: 12px; font-size: 12px; color: var(--accent); font-weight: 600; }
+
+  /* SAMPLES PLAYER (placeholder) */
+  .samples { padding: 80px 32px; max-width: 1100px; margin: 0 auto; }
+  .samples h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 48px); margin-bottom: 40px; font-weight: 700; }
+  .player-list { display: grid; gap: 12px; }
+  .track {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 16px;
+    transition: background 0.1s;
+  }
+  .track:hover { background: var(--bg-card); }
+  .play-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--accent); color: var(--bg);
+    border: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .track-info { flex: 1; min-width: 0; }
+  .track-info h4 { font-family: var(--display); font-size: 15px; font-weight: 600; }
+  .track-info p { font-size: 12px; color: var(--fg-dim); }
+  .track-meta { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
+  .track-tag {
+    font-size: 10px; padding: 3px 8px; background: rgba(212,255,63,0.15); color: var(--accent);
+    border-radius: 999px; letter-spacing: 1px;
+  }
+  .track-bpm { font-size: 12px; color: var(--fg-dim); font-family: var(--display); }
+
+  /* PRICING */
+  .pricing { background: var(--bg-elev); padding: 80px 32px; }
+  .pricing-inner { max-width: 1000px; margin: 0 auto; }
+  .pricing h2 { font-family: var(--display); font-size: clamp(32px, 4vw, 48px); text-align: center; margin-bottom: 12px; font-weight: 700; }
+  .pricing p.lead { text-align: center; color: var(--fg-mute); margin-bottom: 50px; font-size: 17px; }
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .tier {
+    background: var(--bg-card); border: 1.5px solid var(--line); border-radius: 18px; padding: 32px 24px; position: relative;
+  }
+  .tier.featured { border-color: var(--accent); }
+  .tier .badge {
+    position: absolute; top: -13px; left: 24px;
+    background: var(--accent); color: var(--bg);
+    padding: 5px 12px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  }
+  .tier h3 { font-family: var(--display); font-size: 22px; font-weight: 700; }
+  .tier .price { font-family: var(--display); font-size: 44px; font-weight: 700; margin-top: 14px; line-height: 1; }
+  .tier .price span { font-size: 16px; color: var(--fg-dim); font-weight: 400; }
+  .tier .price-note { font-size: 12px; color: var(--fg-dim); margin-top: 4px; }
+  .tier ul { list-style: none; margin: 24px 0; }
+  .tier li {
+    padding: 8px 0; font-size: 14px; color: var(--fg-mute);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: flex-start; gap: 8px;
+  }
+  .tier li:before { content: "→"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  .cta-section { padding: 80px 32px; text-align: center; max-width: 720px; margin: 0 auto; }
+  .cta-section h2 { font-family: var(--display); font-size: clamp(36px, 5vw, 56px); font-weight: 700; margin-bottom: 16px; line-height: 1.05; }
+  .cta-section h2 em { color: var(--accent); font-style: italic; }
+  .cta-section p { color: var(--fg-mute); margin-bottom: 36px; font-size: 17px; }
+
+  footer { padding: 40px 32px; text-align: center; color: var(--fg-dim); font-size: 13px; border-top: 1px solid var(--line); }
+  footer .links { margin-bottom: 14px; }
+  footer .links a { color: var(--fg-mute); text-decoration: none; margin: 0 12px; }
+
+  @media (max-width: 720px) { .nav-links a:not(.btn) { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="logo">HI <span>BEATS</span></div>
+    <div class="nav-links">
+      <a href="#cats">Genres</a>
+      <a href="#samples">Listen</a>
+      <a href="#pricing">Pricing</a>
+      <a href="mailto:hi@newhinyc.com" class="btn">Get Access</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">FOR SHORT-FORM CREATORS</span>
+  <h1>Music that<br/><em>cuts to the hook.</em></h1>
+  <p class="sub">Drop-ready 30 / 60 / 90-sec tracks designed for TikTok, Reels, and Shorts. Made in NYC by a music studio + AI. Royalty-free.</p>
+  <div class="cta-row">
+    <a href="#samples" class="btn">Listen Free</a>
+    <a href="#pricing" class="btn btn-outline">See Plans</a>
+  </div>
+</section>
+
+<section class="cats" id="cats">
+  <h2>30 starter tracks · <em>6 categories</em></h2>
+  <p class="lead">All cut for short-form. Each has a hook within :05, drop within :15, and clean :06/:15/:30 edits.</p>
+  <div class="cat-grid">
+    <div class="cat"><div class="icon">🔥</div><h3>Energy / Hype</h3><p>Trap, hip-hop, electro for hype-up moments</p><span class="count">10 tracks</span></div>
+    <div class="cat"><div class="icon">🌙</div><h3>Chill / Lo-fi</h3><p>Background mood for vlogs, b-roll, talking heads</p><span class="count">10 tracks</span></div>
+    <div class="cat"><div class="icon">🎬</div><h3>Cinematic / Drop</h3><p>Reveal music, tension builds, before/after</p><span class="count">5 tracks</span></div>
+    <div class="cat"><div class="icon">🎉</div><h3>Comedy / Quirky</h3><p>Goofy walks, awkward moments, mic drops</p><span class="count">5 tracks</span></div>
+  </div>
+</section>
+
+<section class="samples" id="samples">
+  <h2>Sample tracks</h2>
+  <div class="player-list">
+    <div class="track"><button class="play-btn">▶</button><div class="track-info"><h4>Subway Burst</h4><p>Hip-hop trap · NYC subway energy</p></div><div class="track-meta"><span class="track-tag">ENERGY</span><span class="track-bpm">95 BPM</span></div></div>
+    <div class="track"><button class="play-btn">▶</button><div class="track-info"><h4>Glow Up</h4><p>Indie-pop electronic · Female ad-libs</p></div><div class="track-meta"><span class="track-tag">ENERGY</span><span class="track-bpm">120 BPM</span></div></div>
+    <div class="track"><button class="play-btn">▶</button><div class="track-info"><h4>After Hours Coffee</h4><p>Lo-fi hip-hop · Jazzy piano + sax</p></div><div class="track-meta"><span class="track-tag">CHILL</span><span class="track-bpm">75 BPM</span></div></div>
+    <div class="track"><button class="play-btn">▶</button><div class="track-info"><h4>Big Reveal</h4><p>Epic cinematic orchestral</p></div><div class="track-meta"><span class="track-tag">CINEMATIC</span><span class="track-bpm">90 BPM</span></div></div>
+    <div class="track"><button class="play-btn">▶</button><div class="track-info"><h4>Goofy Walk</h4><p>Ukulele pop · Whistling + claps</p></div><div class="track-meta"><span class="track-tag">COMEDY</span><span class="track-bpm">120 BPM</span></div></div>
+    <div class="track"><button class="play-btn">▶</button><div class="track-info"><h4>Sunday Slow</h4><p>Jazzy chill-hop · Mellow Rhodes</p></div><div class="track-meta"><span class="track-tag">CHILL</span><span class="track-bpm">80 BPM</span></div></div>
+  </div>
+  <p style="text-align:center; margin-top:30px; color: var(--fg-dim); font-size:14px;">More samples after launch · subscribe below</p>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <h2>Plans</h2>
+    <p class="lead">Cancel anytime. All tracks royalty-free for the licensed scope.</p>
+    <div class="tiers">
+      <div class="tier">
+        <h3>FREE</h3>
+        <div class="price">$0</div>
+        <div class="price-note">listen + low-quality preview</div>
+        <ul>
+          <li>Stream all tracks</li>
+          <li>30-sec preview MP3 download</li>
+          <li>Watermarked / personal-use only</li>
+        </ul>
+        <a href="mailto:hi@newhinyc.com?subject=HI%20Beats%20Free%20Access" class="btn btn-outline" style="width:100%; text-align:center;">Sign Up</a>
+      </div>
+      <div class="tier featured">
+        <span class="badge">CREATOR</span>
+        <h3>PERSONAL</h3>
+        <div class="price">$9.99<span>/mo</span></div>
+        <div class="price-note">unlimited downloads · personal social</div>
+        <ul>
+          <li>All 30 tracks (growing)</li>
+          <li>HD WAV + MP3 downloads</li>
+          <li>Use on your TikTok / IG / YT</li>
+          <li>No watermark</li>
+        </ul>
+        <a href="mailto:hi@newhinyc.com?subject=HI%20Beats%20Personal" class="btn" style="width:100%; text-align:center;">Get Personal</a>
+      </div>
+      <div class="tier">
+        <h3>COMMERCIAL</h3>
+        <div class="price">$19.99<span>/mo</span></div>
+        <div class="price-note">brand campaigns + ads</div>
+        <ul>
+          <li>All PERSONAL features</li>
+          <li>Use in paid ads / branded content</li>
+          <li>Use for client work (agencies)</li>
+          <li>Up to 1M monthly views</li>
+        </ul>
+        <a href="mailto:hi@newhinyc.com?subject=HI%20Beats%20Commercial" class="btn btn-outline" style="width:100%; text-align:center;">Get Commercial</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>Stop scrubbing<br/>through stock libraries.</h2>
+  <p>Pre-categorized by mood, BPM, and use-case. Find a track in 30 seconds, not an hour.</p>
+  <a href="#samples" class="btn">Listen Now</a>
+</section>
+
+<footer>
+  <div class="links">
+    <a href="https://www.instagram.com/newhinyc/">@newhinyc</a>
+    <a href="/histudio/">HI Studio</a>
+    <a href="/hisongs/">HI Songs</a>
+  </div>
+  <div>HI Beats · NYC music studio · Made for the algorithm</div>
+  <div style="margin-top:6px; color: var(--fg-dim);">© 2026 HI Beats.</div>
+</footer>
+
+</body>
+</html>
