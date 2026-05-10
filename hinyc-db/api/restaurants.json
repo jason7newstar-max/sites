@@ -370,6 +370,101 @@
     ]
   },
   {
+    "id": "hwayuan-1",
+    "slug": "hwa-yuan",
+    "source": "featured",
+    "name_en": "HWA YUAN",
+    "name_cn": "華 园",
+    "tagline_cn": "华埠华园 · 北京鸭 + 麻婆豆腐",
+    "tagline_kr": "차이나타운 화원 · 페킹덕 + 마파두부",
+    "address_line": "42 E Broadway",
+    "address_city": "CHINATOWN · MANHATTAN · NYC",
+    "neighborhood": "Chinatown",
+    "rating_tag": "⭐ 4.5 · CHINATOWN · $40-90",
+    "accent_color": "#7c1f1f",
+    "dishes": [
+      {
+        "cn": "招牌北京鸭",
+        "en": "PEKING DUCK",
+        "kr": "페킹 덕",
+        "emoji": "🦆"
+      },
+      {
+        "cn": "麻婆豆腐",
+        "en": "MAPO TOFU",
+        "kr": "마파두부"
+      }
+    ],
+    "youtube_id": "ljRdVaCz_NQ",
+    "youtube_url": "https://youtu.be/ljRdVaCz_NQ",
+    "scheduled_at": "2026-05-09T21:00:00-04:00",
+    "yt_title": "5星级北京鸭",
+    "yt_description": "发现曼哈顿唐人街最美味的餐厅 - 華园！这里的招牌北京鸭和麻婆豆腐简直是必吃。 \n   这家位于42 E Broadway的餐厅，是每个中国美食爱好者的梦想。 \n   今天我将带你体验华埠最好的北京菜，别忘了关注我们获取最新的美食推荐！ \n   #nycfood #chinesefood #manhattan #tangrenjie #huaerhuayuan #beijingduck #mapotofu #foodie #nycfoodtour\n\n#Shorts",
+    "yt_tags": [
+      "Shorts",
+      "nyc",
+      "manhattan",
+      "chinesefood",
+      "tangrenjie",
+      "huaerhuayuan",
+      "beijingduck",
+      "mapotofu",
+      "foodie",
+      "nycfoodtour",
+      "chinatown",
+      "lic",
+      "flushing",
+      "hidden gem"
+    ]
+  },
+  {
+    "id": "junoon-1",
+    "slug": "junoon",
+    "source": "featured",
+    "name_en": "JUNOON",
+    "name_cn": "JUNOON",
+    "tagline_cn": "熨斗区印度米其林 · 羊小腿 BIRYANI",
+    "tagline_kr": "플랫아이언 인도 미슐랭 · 양고기 비리야니",
+    "address_line": "27 W 24th St",
+    "address_city": "FLATIRON · MANHATTAN · NYC",
+    "neighborhood": "Flatiron",
+    "rating_tag": "⭐ 4.6 · FLATIRON · $60-120",
+    "accent_color": "#a16e34",
+    "dishes": [
+      {
+        "cn": "羊小腿 BIRYANI",
+        "en": "LAMB SHANK BIRYANI",
+        "kr": "양고기 비리야니",
+        "emoji": "🍛"
+      },
+      {
+        "cn": "TANDOORI 拼盘",
+        "en": "TANDOORI PLATTER",
+        "kr": "탄두리 플래터"
+      }
+    ],
+    "youtube_id": "Q81Ljin7FzU",
+    "youtube_url": "https://youtu.be/Q81Ljin7FzU",
+    "scheduled_at": "2026-05-09T18:00:00-04:00",
+    "yt_title": "5星级！FLATIRON 印度米其林",
+    "yt_description": "位于曼哈顿FLATIRON区的JUNOON餐厅，是一家4.6分的高评分餐厅，价格在60-120美元之间，提供印度美食。这里的招牌菜包括羊小腿BIRYANI和TANDOORI拼盘，绝对是值得一试的美食。 \n   如果你是印度美食爱好者，或者想尝试新口味的朋友，这家餐厅绝对是你的不二之选。 \n   在这个视频中，我们将带你探索JUNOON的美食世界，一起发现这里的美味秘密吧！ #nycfood #indianfood #flatiron #manhattan #foodie #foodtour #hidden_gems #米其林 #印度美食 #junoon\n\n#Shorts",
+    "yt_tags": [
+      "Shorts",
+      "nyc",
+      "manhattan",
+      "flatiron",
+      "indianfood",
+      "junoon",
+      "foodie",
+      "foodtour",
+      "hidden_gems",
+      "米其林",
+      "印度美食",
+      "biryani",
+      "tandoori"
+    ]
+  },
+  {
     "id": "kjun-1",
     "slug": "k-jun",
     "source": "featured",
@@ -416,6 +511,54 @@
       "foodie",
       "foodtour",
       "hidden gem"
+    ]
+  },
+  {
+    "id": "katzs-1",
+    "slug": "katz-s-deli",
+    "source": "featured",
+    "name_en": "KATZ'S DELI",
+    "name_cn": "KATZ'S",
+    "tagline_cn": "137 年老店 · PASTRAMI ON RYE",
+    "tagline_kr": "LES 137년 노포 · 파스트라미 라이",
+    "address_line": "205 E Houston St",
+    "address_city": "LES · MANHATTAN · NYC",
+    "neighborhood": "Les",
+    "rating_tag": "⭐ 4.5 · LES · $20-40",
+    "accent_color": "#a8341a",
+    "dishes": [
+      {
+        "cn": "招牌 PASTRAMI",
+        "en": "PASTRAMI ON RYE",
+        "kr": "파스트라미 라이",
+        "emoji": "🥪"
+      },
+      {
+        "cn": "KNISH",
+        "en": "POTATO KNISH",
+        "kr": "포테이토 크니시"
+      }
+    ],
+    "youtube_id": "EZ50R1ClsMw",
+    "youtube_url": "https://youtu.be/EZ50R1ClsMw",
+    "scheduled_at": "2026-05-09T09:00:00-04:00",
+    "yt_title": "137年老店",
+    "yt_description": "在纽约市曼哈顿的下东区，有一家137年的老店，隐藏着美味的招牌菜。KATZ'S DELI是LES的标志性餐厅，拥有4.5分的高评分，值得一试。这里的PASTRAMI ON RYE和POTATO KNISH是必尝的美食，价格也很亲民，平均每人20-40美元就能享受到美食的乐趣。 \n   这家餐厅不仅有着丰富的历史，还有着独特的氛围，值得每一个美食爱好者来体验。 \n   来这里品尝经典的PASTRAMI ON RYE和POTATO KNISH，体验LES的美食魅力！ #NYCfood #LES #KATZSDELI #PASTRAMI #FOODIE #FOODTOUR #HIDDENGEM #\n\n#Shorts",
+    "yt_tags": [
+      "Shorts",
+      "LES",
+      "MANHATTAN",
+      "NYC",
+      "KATZ'S DELI",
+      "PASTRAMI",
+      "PASTRAMI ON RYE",
+      "KNISH",
+      "POTATO KNISH",
+      "FOODIE",
+      "FOODTOUR",
+      "HIDDENGEM",
+      "NYCFOOD",
+      "JEWISHDELI"
     ]
   },
   {
@@ -897,6 +1040,53 @@
     ]
   },
   {
+    "id": "tatiana-1",
+    "slug": "tatiana-kwame",
+    "source": "featured",
+    "name_en": "TATIANA · KWAME",
+    "name_cn": "TATIANA",
+    "tagline_cn": "林肯中心 KWAME · 加勒比 + 非洲",
+    "tagline_kr": "링컨센터 카리브 · 옥스테일",
+    "address_line": "10 Lincoln Center Plaza",
+    "address_city": "LINCOLN CTR · MANHATTAN · NYC",
+    "neighborhood": "Lincoln Ctr",
+    "rating_tag": "⭐ 4.5 · LINCOLN CTR · $80-150",
+    "accent_color": "#7d2c1c",
+    "dishes": [
+      {
+        "cn": "招牌牛尾",
+        "en": "OXTAIL PEPPERPOT",
+        "kr": "옥스테일 페퍼팟",
+        "emoji": "🍲"
+      },
+      {
+        "cn": "羊肉 BIRYANI",
+        "en": "LAMB BIRYANI",
+        "kr": "양고기 비리야니"
+      }
+    ],
+    "youtube_id": "V08ydaRhk9A",
+    "youtube_url": "https://youtu.be/V08ydaRhk9A",
+    "scheduled_at": "2026-05-09T12:00:00-04:00",
+    "yt_title": "5星级！林肯中心的秘密",
+    "yt_description": "在曼哈顿的林肯中心，有一家隐藏的餐厅让人赞不绝口。TATIANA · KWAME是一家结合加勒比和非洲风味的餐厅，拥有4.5星的评分，平均价格在80-150美元。这里的招牌菜包括招牌牛尾（OXTAIL PEPPERPOT）和羊肉BIRYANI（LAMB BIRYANI），一定会让你的味蕾感到惊喜。\n   \n   这家餐厅位于10 Lincoln Center Plaza，步行即可到达林肯中心。餐厅的氛围优雅而现代，非常适合特殊场合或商务聚会。\n   \n   如果你正在寻找一家独特而美味的餐厅，那么TATIANA · KWAME绝对是你的首选。#林肯中心美食 #加勒比非洲菜 #餐厅推荐 #NYCfood #foodtour #hidden gem #曼哈顿美食 #KWAME #TATIANA\n\n#Shorts",
+    "yt_tags": [
+      "Shorts",
+      "林肯中心",
+      "加勒比非洲菜",
+      "TATIANA · KWAME",
+      "曼哈顿",
+      "NYC",
+      "餐厅推荐",
+      "foodie",
+      "foodtour",
+      "hidden gem",
+      "KWAME",
+      "TATIANA",
+      "林肯中心美食"
+    ]
+  },
+  {
     "id": "nana-1",
     "slug": "tokyo-alley-queens",
     "source": "featured",
@@ -987,6 +1177,52 @@
       "foodie",
       "nycfood",
       "中城美食"
+    ]
+  },
+  {
+    "id": "veselka-1",
+    "slug": "veselka",
+    "source": "featured",
+    "name_en": "VESELKA",
+    "name_cn": "VESELKA",
+    "tagline_cn": "东村乌克兰 70 年 · PIEROGI + 罗宋汤",
+    "tagline_kr": "이스트 빌리지 70년 · 피로기 + 보르시",
+    "address_line": "144 2nd Ave",
+    "address_city": "EAST VILLAGE · MANHATTAN · NYC",
+    "neighborhood": "East Village",
+    "rating_tag": "⭐ 4.4 · EAST VILLAGE · $15-30",
+    "accent_color": "#1a4a8c",
+    "dishes": [
+      {
+        "cn": "招牌 PIEROGI",
+        "en": "PIEROGI",
+        "kr": "피로기",
+        "emoji": "🥟"
+      },
+      {
+        "cn": "罗宋汤",
+        "en": "BORSCHT",
+        "kr": "보르시"
+      }
+    ],
+    "youtube_id": "juxQXi8B3Yw",
+    "youtube_url": "https://youtu.be/juxQXi8B3Yw",
+    "scheduled_at": "2026-05-09T15:00:00-04:00",
+    "yt_title": "70年东村乌克兰",
+    "yt_description": "位于曼哈顿东村的VESELKA，是一家拥有70年历史的乌克兰餐厅，评分高达4.4分。他们的招牌菜PIEROGI和罗宋汤绝对不能错过！这里的PIEROGI种类繁多，口味独特，罗宋汤则是用爱心慢煮而成。 \n   作为东村的隐藏瑰宝，VESELKA是任何美食爱好者的必去之地。从经典的PIEROGI到独特的乌克兰风味菜肴，每一道菜都能让你体验到正宗的乌克兰美食。\n   如果你是美食爱好者，或者只是想尝试新的餐厅，那么VESELKA绝对是你的不二之选。#NYCFood #Veselka #乌克兰美食 #PIEROGI #罗宋汤 #东村美食 #曼哈顿餐厅 #Foodie #HiddenGem\n\n#Shorts",
+    "yt_tags": [
+      "Shorts",
+      "NYC",
+      "EAST VILLAGE",
+      "MANHATTAN",
+      "VESELKA",
+      "乌克兰美食",
+      "PIEROGI",
+      "罗宋汤",
+      "东村美食",
+      "Foodie",
+      "HiddenGem",
+      "NYCFood"
     ]
   },
   {

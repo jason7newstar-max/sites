@@ -212,6 +212,10 @@ header { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); ba
 .r-tags { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
 .r-tag { font-size: 11px; padding: 4px 10px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-mute); }
 
+.r-actions { max-width: 900px; margin: 0 auto 30px; padding: 0 24px; display: flex; gap: 10px; flex-wrap: wrap; }
+.r-action { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; background: var(--ink); color: var(--bg-elev); border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; transition: transform 0.15s, background 0.15s; }
+.r-action:hover { transform: translateY(-1px); background: var(--accent); text-decoration: none; }
+
 footer { padding: 40px 24px; text-align: center; color: var(--ink-dim); font-size: 13px; border-top: 1px solid var(--line); }
 footer .links { margin-bottom: 12px; }
 footer .links a { color: var(--ink-mute); margin: 0 10px; font-size: 13px; }
@@ -346,6 +350,8 @@ REST_TEMPLATE = """<!DOCTYPE html>
 
 {video_block}
 
+{actions_block}
+
 {tagline_block}
 
 {dishes_block}
@@ -397,6 +403,20 @@ def render_restaurant(r):
 
     schema_block = f'<script type="application/ld+json">{json.dumps(schema, ensure_ascii=False)}</script>'
 
+    # Action buttons (reserve / delivery / directions). Pre-positioned for affiliate swap-in.
+    # OpenTable affiliate ID will go in `?refid=YOUR_ID` once user signs up via Impact.
+    import urllib.parse as _up
+    full_addr = f"{r['address_line']}, {r['address_city']}".strip(" ,")
+    name_q = _up.quote(r["name_en"] or r["name_cn"])
+    addr_q = _up.quote(full_addr) if full_addr else name_q
+    actions_block = ""
+    if full_addr or r["name_en"]:
+        actions_block = f'''<section class="r-actions">
+  <a class="r-action" target="_blank" rel="noopener" href="https://www.opentable.com/s?term={name_q}+New+York&datetime=&covers=2">📅 Reserve</a>
+  <a class="r-action" target="_blank" rel="noopener" href="https://www.ubereats.com/feed?diningMode=DELIVERY&pl=%7B%22type%22%3A%22query%22%2C%22query%22%3A%22{name_q}%22%7D">🛵 Delivery</a>
+  <a class="r-action" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query={addr_q}">🗺️ Directions</a>
+</section>'''
+
     name_cn_block = f'<div class="name-cn">{esc(r["name_cn"])}</div>' if r["name_cn"] else ""
 
     addr_block = f'<span><strong>📍</strong> {esc(r["address_line"])}, {esc(r["address_city"])}</span>' if r["address_line"] else ""
@@ -440,6 +460,7 @@ def render_restaurant(r):
         rating_block=rating_block,
         yt_block=yt_block,
         video_block=video_block,
+        actions_block=actions_block,
         tagline_block=tagline_block,
         dishes_block=dishes_block,
         description_block=description_block,

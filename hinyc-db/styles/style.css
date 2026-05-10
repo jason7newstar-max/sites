@@ -69,6 +69,10 @@ header { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); ba
 .r-tags { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
 .r-tag { font-size: 11px; padding: 4px 10px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: 999px; color: var(--ink-mute); }
 
+.r-actions { max-width: 900px; margin: 0 auto 30px; padding: 0 24px; display: flex; gap: 10px; flex-wrap: wrap; }
+.r-action { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; background: var(--ink); color: var(--bg-elev); border-radius: 999px; font-size: 13px; font-weight: 600; text-decoration: none; transition: transform 0.15s, background 0.15s; }
+.r-action:hover { transform: translateY(-1px); background: var(--accent); text-decoration: none; }
+
 footer { padding: 40px 24px; text-align: center; color: var(--ink-dim); font-size: 13px; border-top: 1px solid var(--line); }
 footer .links { margin-bottom: 12px; }
 footer .links a { color: var(--ink-mute); margin: 0 10px; font-size: 13px; }
